@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Observation Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body { 
+            font-family: Arial; 
+            margin: 20px; 
+            max-width: 600px; 
+        }
+
+        h2 { 
+            color: #2a6f37; 
+            text-align: center;
+        }
+
+        label { 
+            font-weight: bold; 
+            margin-top: 12px; 
+            display: block; 
+        }
+
+        textarea, input, select {
+            width: 100%; 
+            padding: 10px; 
+            margin-top: 5px; 
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        #preview img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 8px;
+            margin-top: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .submit-btn {
+            background: #2a6f37; 
+            color: white; 
+            padding: 14px;
+            border: none; 
+            width: 100%; 
+            margin-top: 20px; 
+            cursor: pointer;
+            border-radius: 6px; 
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Safety Observation Form</h2>
+
+<label>Name</label>
+<input type="text" id="name" value="Test User" readonly>
+
+<label>Badge Number</label>
+<input type="text" id="badge" value="12345" readonly>
+
+<label>Site</label>
+<input type="text" id="site" value="Test Site" readonly>
+
+<label>Area</label>
+<input type="text" id="area" value="Warehouse" readonly>
+
+<hr>
+
+<!-- Observation Type -->
+<label>Observation Type</label>
+<select id="obsType" required>
+    <option value="">Select type...</option>
+    <option>Health</option>
+    <option>Environment</option>
+    <option>Safety</option>
+</select>
+
+<!-- Unsafe Type -->
+<label>Unsafe Act / Condition</label>
+<select id="unsafeType" required>
+    <option value="">Select condition...</option>
+    <option>Unsafe Act</option>
+    <option>Unsafe Condition</option>
+    <option>Natural</option>
+</select>
+
+<!-- Category -->
+<label>Category</label>
+<select id="category" required>
+    <option value="">Select category...</option>
+    <option>PPE</option>
+    <option>Housekeeping</option>
+    <option>Equipment</option>
+    <option>Behaviour</option>
+    <option>Environment</option>
+</select>
+
+<!-- Risk Level -->
+<label>Risk Level</label>
+<select id="risk" required>
+    <option value="">Select risk...</option>
+    <option>Low</option>
+    <option>Medium</option>
+    <option>High</option>
+</select>
+
+<label>Description</label>
+<textarea id="desc" placeholder="Describe what you observed..." required></textarea>
+
+<label>Photos (optional)</label>
+<input type="file" id="photos" accept="image/*" multiple>
+<div id="preview"></div>
+
+<label>Immediate Actions Taken</label>
+<textarea id="actions"></textarea>
+
+<label>Investigation Required?</label>
+<select id="investigation">
+    <option>No</option>
+    <option>Yes</option>
+</select>
+
+<!-- Hidden GPS fields -->
+<input type="hidden" id="lat">
+<input type="hidden" id="lng">
+
+<button class="submit-btn" onclick="saveObservation()">
+    Submit Observation
+</button>
+
+<script>
+// Photo preview
+document.getElementById('photos').addEventListener('change', function() {
+    const preview = document.getElementById('preview');
+    preview.innerHTML = "";
+    [...this.files].forEach(file => {
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        preview.appendChild(img);
+    });
+});
+
+// GPS capture in background
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(pos => {
+        document.getElementById('lat').value = pos.coords.latitude;
+        document.getElementById('lng').value = pos.coords.longitude;
+    });
+}
+
+// Save observation to LocalStorage
+function saveObservation() {
+
+    // Validation
+    if (!document.getElementById('obsType').value ||
+        !document.getElementById('unsafeType').value ||
+        !document.getElementById('category').value ||
+        !document.getElementById('risk').value ||
+        !document.getElementById('desc').value.trim()) {
+
+        alert("Please complete all required fields.");
+        return;
+    }
+
+    // Convert photos to preview URLs
+    let photoFiles = document.getElementById('photos').files;
+    let photoArray = [];
+
+    for (let i = 0; i < photoFiles.length; i++) {
+        photoArray.push(URL.createObjectURL(photoFiles[i]));
+    }
+
+    // Build observation object
+    let obs = {
+        name: document.getElementById('name').value,
+        badge: document.getElementById('badge').value,
+        site: document.getElementById('site').value,
+        area: document.getElementById('area').value,
+        type: document.getElementById('obsType').value,
+        condition: document.getElementById('unsafeType').value,
+        category: document.getElementById('category').value,
+        risk: document.getElementById('risk').value,
+        description: document.getElementById('desc').value,
+        actions: document.getElementById('actions').value,
+        investigation: document.getElementById('investigation').value,
+        lat: document.getElementById('lat').value,
+        lng: document.getElementById('lng').value,
+        photos: photoArray,
+        timestamp: new Date().toLocaleString()
+    };
+
+    // Save to LocalStorage
+    let list = JSON.parse(localStorage.getItem("observations") || "[]");
+    list.push(obs);
+    localStorage.setItem("observations", JSON.stringify(list));
+
+    // Redirect to dashboard
+    window.location.href = "dashboard.html";
+}
+</script>
+
+</body>
+</html>

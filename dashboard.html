@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Observation Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 20px;
+            max-width: 800px;
+        }
+
+        h2 {
+            color: #2a6f37;
+            text-align: center;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .photos img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 8px;
+            margin-top: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .empty {
+            text-align: center;
+            color: #777;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Submitted Observations</h2>
+
+<div id="list"></div>
+
+<script>
+function loadObservations() {
+    let data = JSON.parse(localStorage.getItem("observations") || "[]");
+    let list = document.getElementById("list");
+
+    if (data.length === 0) {
+        list.innerHTML = "<p class='empty'>No observations submitted yet.</p>";
+        return;
+    }
+
+    data.forEach(obs => {
+        let card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+            <strong>Type:</strong> ${obs.type}<br>
+            <strong>Condition:</strong> ${obs.condition}<br>
+            <strong>Category:</strong> ${obs.category}<br>
+            <strong>Risk:</strong> ${obs.risk}<br><br>
+
+            <strong>Description:</strong><br>
+            ${obs.description}<br><br>
+
+            <strong>Actions Taken:</strong><br>
+            ${obs.actions}<br><br>
+
+            <strong>Investigation Required:</strong> ${obs.investigation}<br><br>
+
+            <strong>GPS:</strong> ${obs.lat}, ${obs.lng}<br><br>
+
+            <strong>Photos:</strong>
+            <div class="photos">
+                ${obs.photos.map(p => `<img src="${p}">`).join("")}
+            </div>
+        `;
+
+        list.appendChild(card);
+    });
+}
+
+loadObservations();
+</script>
+
+</body>
+</html>
