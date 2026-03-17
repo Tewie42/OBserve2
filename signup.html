@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Signup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial; margin: 20px; max-width: 500px; }
+        h2 { color: #2a6f37; text-align: center; }
+        label { font-weight: bold; margin-top: 10px; display: block; }
+        input { width: 100%; padding: 8px; margin-top: 4px; border-radius: 6px; border: 1px solid #ccc; }
+        button { background: #2a6f37; color: white; padding: 10px; border: none; width: 100%; margin-top: 15px; cursor: pointer; border-radius: 6px; font-size: 16px; }
+        .info { margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+<h2>User Signup</h2>
+
+<div class="info">
+    <div><strong>Name:</strong> <span id="name"></span></div>
+    <div><strong>Username:</strong> <span id="username"></span></div>
+</div>
+
+<label>Password</label>
+<input type="password" id="password">
+
+<button onclick="register()">Set Password & Continue</button>
+
+<script>
+function getUsers() {
+    return JSON.parse(localStorage.getItem("users") || "[]");
+}
+
+function saveUsers(users) {
+    localStorage.setItem("users", JSON.stringify(users));
+}
+
+function getQueryParam(name) {
+    const params = new URLSearchParams(window.location.search);
+    return params.get(name);
+}
+
+let currentUser = null;
+
+function loadUser() {
+    const username = getQueryParam("user");
+    if (!username) {
+        alert("No user specified.");
+        return;
+    }
+
+    const users = getUsers();
+    currentUser = users.find(u => u.username === username);
+
+    if (!currentUser) {
+        alert("User not found. Please contact your administrator.");
+        return;
+    }
+
+    document.getElementById("name").textContent = currentUser.name || "";
+    document.getElementById("username").textContent = currentUser.username || "";
+}
+
+function register() {
+    if (!currentUser) {
+        alert("User not loaded.");
+        return;
+    }
+
+    const pwd = document.getElementById("password").value;
+    if (!pwd) {
+        alert("Please enter a password.");
+        return;
+    }
+
+    const users = getUsers();
+    const idx = users.findIndex(u => u.username === currentUser.username);
+    if (idx === -1) {
+        alert("User not found in storage.");
+        return;
+    }
+
+    users[idx].password = pwd;      // plain for now; can hash later
+    users[idx].registered = true;
+
+    saveUsers(users);
+
+    window.location.href = `welcome.html?user=${encodeURIComponent(currentUser.username)}`;
+}
+
+loadUser();
+</script>
+
+</body>
+</html>
