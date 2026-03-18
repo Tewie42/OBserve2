@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body { font-family: Arial; margin: 20px; max-width: 1100px; }
+        h2 { color: #2a6f37; text-align: center; }
+
+        .kpi-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .kpi-card {
+            background: #f7f7f7;
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .kpi-icon {
+            font-size: 20px;
+            margin-right: 6px;
+        }
+        .kpi-title {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .kpi-value {
+            font-size: 18px;
+            margin-top: 4px;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        select {
+            width: 100%;
+            padding: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #f0f0f0;
+        }
+
+        .actioned {
+            background: #d4f8d4;
+        }
+        .not-actioned {
+            background: #ffd6d6;
+        }
+
+        button {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .btn-action {
+            background: #2a6f37;
+            color: white;
+        }
+
+        .section-title {
+            margin-top: 30px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .talk-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            background: #f9f9f9;
+        }
+        .talk-title {
+            font-weight: bold;
+        }
+        .small {
+            font-size: 12px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Admin Dashboard</h2>
+
+<!-- KPI CARDS -->
+<div class="kpi-container">
+    <div class="kpi-card">
+        <div class="kpi-title"><span class="kpi-icon">📊</span>Total Observations (This Week)</div>
+        <div class="kpi-value" id="kpiTotal">0</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-title"><span class="kpi-icon">🎯</span>Weekly Target (All Users)</div>
+        <div class="kpi-value" id="kpiTarget">0</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-title"><span class="kpi-icon">📈</span>Progress</div>
+        <div class="kpi-value" id="kpiProgress">0%</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-title"><span class="kpi-icon">⚠️</span>High Risk</div>
+        <div class="kpi-value" id="kpiHighRisk">0</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-title"><span class="kpi-icon">🟢</span>Actioned / 🔴 Un‑actioned</div>
+        <div class="kpi-value" id="kpiStatus">0 / 0</div>
+    </div>
+</div>
+
+<!-- FILTERS -->
+<div class="section-title">Filters</div>
+<div class="filters">
+    <select id="filterUser">
+        <option value="">All Users</option>
+    </select>
+    <select id="filterPosition">
+        <option value="">All Positions</option>
+    </select>
+    <select id="filterCategory">
+        <option value="">All Categories</option>
+    </select>
+    <select id="filterRisk">
+        <option value="">All Risk Levels</option>
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+    </select>
+    <select id="filterStatus">
+        <option value="">All Status</option>
+        <option value="Actioned">Actioned</option>
+        <option value="Not Actioned">Not Actioned</option>
+    </select>
+</div>
+
+<!-- OBSERVATION TABLE -->
+<div class="section-title">Observations</div>
+<table id="obsTable">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>User</th>
+            <th>Position</th>
+            <th>Type</th>
+            <th>Condition</th>
+            <th>Category</th>
+            <th>Risk</th>
+            <th>Status</th>
+            <th>Language</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<!-- TOOLBOX TALK SUGGESTIONS -->
+<div class="section-title">Suggested Toolbox Talks</div>
+<div id="talkSuggestions"></div>
+
+<script>
+function getUsers() {
+    return JSON.parse(localStorage.getItem("users") || "[]");
+}
+function getObservations() {
+    return JSON.parse(localStorage.getItem("observations") || "[]");
+}
+function saveObservations(obs) {
+    localStorage.setItem("observations", JSON.stringify(obs));
+}
+
+// Simple "this week" filter: Sunday 00:00 to Saturday 23:59
+function isThisWeek(dateStr) {
+    const d = new Date(dateStr);
+    if (isNaN(d)) return false;
+
+    const now = new Date();
+    const day = now.getDay(); // 0=Sun
+    const diffToSunday = day; // days since Sunday
+    const sunday = new Date(now);
+    sunday.setHours(0,0,0,0);
+    sunday.setDate(now.getDate() - diffToSunday);
+
+    const saturday = new Date(sunday);
+    saturday.setDate(sunday.getDate() + 6);
+    saturday.setHours(23,59,59,999);
+
+    return d >= sunday && d <= saturday;
+}
+
+let allObs = [];
+let filteredObs = [];
+
+function initFilters() {
+    const users = getUsers();
+    const userSelect = document.getElementById("filterUser");
+    const posSelect = document.getElementById("filterPosition");
+    const catSelect = document.getElementById("filterCategory");
+
+    const userSet = new Set();
+    const posSet = new Set();
+    const catSet = new Set();
+
+    allObs.forEach(o => {
+        if (o.userName) userSet.add(o.userName);
+        if (o.position) posSet.add(o.position);
+        if (o.category) catSet.add(o.category);
+    });
+
+    users.forEach(u => {
+        if (u.name) userSet.add(u.name);
+        if (u.position) posSet.add(u.position);
+    });
+
+    userSet.forEach(u => {
+        const opt = document.createElement("option");
+        opt.value = u;
+        opt.textContent = u;
+        userSelect.appendChild(opt);
+    });
+
+    posSet.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p;
+        opt.textContent = p;
+        posSelect.appendChild(opt);
+    });
+
+    catSet.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c;
+        opt.textContent = c;
+        catSelect.appendChild(opt);
+    });
+
+    ["filterUser","filterPosition","filterCategory","filterRisk","filterStatus"].forEach(id => {
+        document.getElementById(id).addEventListener("change", applyFilters);
+    });
+}
+
+function applyFilters() {
+    const fUser = document.getElementById("filterUser").value;
+    const fPos = document.getElementById("filterPosition").value;
+    const fCat = document.getElementById("filterCategory").value;
+    const fRisk = document.getElementById("filterRisk").value;
+    const fStatus = document.getElementById("filterStatus").value;
+
+    filteredObs = allObs.filter(o => {
+        if (fUser && o.userName !== fUser) return false;
+        if (fPos && o.position !== fPos) return false;
+        if (fCat && o.category !== fCat) return false;
+        if (fRisk && o.risk !== fRisk) return false;
+        if (fStatus && o.status !== fStatus) return false;
+        return true;
+    });
+
+    renderTable();
+    updateKpis();
+    updateTalkSuggestions();
+}
+
+function renderTable() {
+    const tbody = document.querySelector("#obsTable tbody");
+    tbody.innerHTML = "";
+
+    filteredObs.forEach(o => {
+        const tr = document.createElement("tr");
+        tr.className = (o.status === "Actioned" ? "actioned" : "not-actioned");
+
+        tr.innerHTML = `
+            <td>${o.date || ""}</td>
+            <td>${o.userName || o.user || ""}</td>
+            <td>${o.position || ""}</td>
+            <td>${o.type || ""}</td>
+            <td>${o.condition_translated || o.condition || ""}</td>
+            <td>${o.category || ""}</td>
+            <td>${o.risk || ""}</td>
+            <td>${o.status || ""}</td>
+            <td>${o.language || ""}</td>
+            <td>
+                ${o.status === "Actioned" ? "" : `<button class="btn-action" onclick="markActioned('${o.id}')">Mark Actioned</button>`}
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function markActioned(id) {
+    const obs = getObservations();
+    const idx = obs.findIndex(o => o.id === id);
+    if (idx >= 0) {
+        obs[idx].status = "Actioned";
+        saveObservations(obs);
+        loadData();
+    }
+}
+
+function updateKpis() {
+    const users = getUsers();
+    const thisWeekObs = filteredObs.filter(o => isThisWeek(o.date));
+
+    const total = thisWeekObs.length;
+    const totalTarget = users.reduce((sum, u) => sum + (parseInt(u.weeklyTarget, 10) || 0), 0);
+
+    const highRisk = thisWeekObs.filter(o => o.risk === "High").length;
+    const actioned = thisWeekObs.filter(o => o.status === "Actioned").length;
+    const notActioned = thisWeekObs.filter(o => o.status !== "Actioned").length;
+
+    const progress = totalTarget > 0 ? Math.round((total / totalTarget) * 100) : 0;
+
+    document.getElementById("kpiTotal").textContent = total;
+    document.getElementById("kpiTarget").textContent = totalTarget;
+    document.getElementById("kpiProgress").textContent = progress + "%";
+    document.getElementById("kpiHighRisk").textContent = highRisk;
+    document.getElementById("kpiStatus").textContent = `${actioned} / ${notActioned}`;
+}
+
+// Simple trend + toolbox talk suggestion engine
+function updateTalkSuggestions() {
+    const container = document.getElementById("talkSuggestions");
+    container.innerHTML = "";
+
+    // Group by category for this week
+    const thisWeek = allObs.filter(o => isThisWeek(o.date));
+    const lastWeek = allObs.filter(o => isLastWeek(o.date));
+
+    const catCountsThis = {};
+    const catCountsLast = {};
+
+    thisWeek.forEach(o => {
+        const c = o.category || "Uncategorized";
+        catCountsThis[c] = (catCountsThis[c] || 0) + 1;
+    });
+    lastWeek.forEach(o => {
+        const c = o.category || "Uncategorized";
+        catCountsLast[c] = (catCountsLast[c] || 0) + 1;
+    });
+
+    const fixedCategories = [
+        "Housekeeping","PPE","Unsafe Acts","Unsafe Conditions",
+        "Equipment / Tools","Working at Heights","Chemical Handling",
+        "Traffic / Vehicles","Manual Handling","Environment","Fire Safety"
+    ];
+
+    const allCats = new Set([
+        ...Object.keys(catCountsThis),
+        ...Object.keys(catCountsLast)
+    ]);
+
+    allCats.forEach(cat => {
+        const thisCount = catCountsThis[cat] || 0;
+        const lastCount = catCountsLast[cat] || 0;
+
+        if (thisCount === 0) return;
+
+        let trend = 0;
+        if (lastCount > 0) {
+            trend = (thisCount - lastCount) / lastCount;
+        } else if (thisCount >= 3) {
+            trend = 1; // strong spike from zero
+        }
+
+        if (trend > 0.3) {
+            const div = document.createElement("div");
+            div.className = "talk-card";
+
+            const isFixed = fixedCategories.includes(cat);
+            const title = isFixed ? `Suggested Toolbox Talk: ${cat}` : `Suggested Safety Discussion: ${cat}`;
+
+            div.innerHTML = `
+                <div class="talk-title">${title}</div>
+                <div class="small">
+                    Observations this week: ${thisCount}${lastCount ? ` (last week: ${lastCount})` : ""}.<br>
+                    Upward trend detected. Consider addressing this topic in your next safety talk.
+                </div>
+            `;
+            container.appendChild(div);
+        }
+    });
+
+    if (!container.innerHTML) {
+        container.innerHTML = `<div class="small">No strong upward trends detected this week.</div>`;
+    }
+}
+
+function isLastWeek(dateStr) {
+    const d = new Date(dateStr);
+    if (isNaN(d)) return false;
+
+    const now = new Date();
+    const day = now.getDay(); // 0=Sun
+    const diffToSunday = day;
+    const thisSunday = new Date(now);
+    thisSunday.setHours(0,0,0,0);
+    thisSunday.setDate(now.getDate() - diffToSunday);
+
+    const lastSunday = new Date(thisSunday);
+    lastSunday.setDate(thisSunday.getDate() - 7);
+
+    const lastSaturday = new Date(lastSunday);
+    lastSaturday.setDate(lastSunday.getDate() + 6);
+    lastSaturday.setHours(23,59,59,999);
+
+    return d >= lastSunday && d <= lastSaturday;
+}
+
+function loadData() {
+    allObs = getObservations();
+
+    // Ensure each observation has an id
+    let changed = false;
+    allObs.forEach(o => {
+        if (!o.id) {
+            o.id = "obs-" + Math.random().toString(36).substr(2,9);
+            changed = true;
+        }
+    });
+    if (changed) saveObservations(allObs);
+
+    filteredObs = allObs.slice();
+    document.getElementById("filterUser").innerHTML = '<option value="">All Users</option>';
+    document.getElementById("filterPosition").innerHTML = '<option value="">All Positions</option>';
+    document.getElementById("filterCategory").innerHTML = '<option value="">All Categories</option>';
+
+    initFilters();
+    renderTable();
+    updateKpis();
+    updateTalkSuggestions();
+}
+
+loadData();
+</script>
+
+</body>
+</html>
