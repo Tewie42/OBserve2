@@ -5,205 +5,206 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <style>
-        body { 
-            font-family: Arial; 
-            margin: 20px; 
-            max-width: 600px; 
-        }
+        body { font-family: Arial; margin: 20px; max-width: 600px; }
+        h2 { color: #2a6f37; text-align: center; }
 
-        h2 { 
-            color: #2a6f37; 
-            text-align: center;
-        }
-
-        label { 
-            font-weight: bold; 
-            margin-top: 12px; 
-            display: block; 
-        }
-
-        textarea, input, select {
-            width: 100%; 
-            padding: 10px; 
-            margin-top: 5px; 
+        label { font-weight: bold; margin-top: 10px; display: block; }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
             border-radius: 6px;
             border: 1px solid #ccc;
+        }
+        button {
+            background: #2a6f37;
+            color: white;
+            padding: 12px;
+            border: none;
+            width: 100%;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 6px;
             font-size: 16px;
         }
 
-        #preview img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            margin-right: 8px;
-            margin-top: 8px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        .submit-btn {
-            background: #2a6f37; 
-            color: white; 
-            padding: 14px;
-            border: none; 
-            width: 100%; 
-            margin-top: 20px; 
-            cursor: pointer;
-            border-radius: 6px; 
-            font-size: 18px;
+        .lang-select {
+            position: fixed;
+            top: 10px;
+            left: 10px;
         }
     </style>
 </head>
 
 <body>
 
-<h2>Safety Observation Form</h2>
+<!-- LANGUAGE SELECTOR -->
+<div class="lang-select">
+    <select id="languageSelect"></select>
+</div>
 
-<label>Name</label>
-<input type="text" id="name" value="Test User" readonly>
+<h2 id="title">Observation Form</h2>
 
-<label>Badge Number</label>
-<input type="text" id="badge" value="12345" readonly>
-
-<label>Site</label>
-<input type="text" id="site" value="Test Site" readonly>
-
-<label>Area</label>
-<input type="text" id="area" value="Warehouse" readonly>
-
-<hr>
-
-<!-- Observation Type -->
-<label>Observation Type</label>
-<select id="obsType" required>
-    <option value="">Select type...</option>
-    <option>Health</option>
-    <option>Environment</option>
-    <option>Safety</option>
+<label id="lblType"></label>
+<select id="type">
+    <option value="Unsafe Act">Unsafe Act</option>
+    <option value="Unsafe Condition">Unsafe Condition</option>
+    <option value="Near Miss">Near Miss</option>
 </select>
 
-<!-- Unsafe Type -->
-<label>Unsafe Act / Condition</label>
-<select id="unsafeType" required>
-    <option value="">Select condition...</option>
-    <option>Unsafe Act</option>
-    <option>Unsafe Condition</option>
-    <option>Natural</option>
+<label id="lblCategory"></label>
+<input type="text" id="category">
+
+<label id="lblCondition"></label>
+<textarea id="condition" rows="4"></textarea>
+
+<label id="lblRisk"></label>
+<select id="risk">
+    <option value="Low">Low</option>
+    <option value="Medium">Medium</option>
+    <option value="High">High</option>
 </select>
 
-<!-- Category -->
-<label>Category</label>
-<select id="category" required>
-    <option value="">Select category...</option>
-    <option>PPE</option>
-    <option>Housekeeping</option>
-    <option>Equipment</option>
-    <option>Behaviour</option>
-    <option>Environment</option>
-</select>
-
-<!-- Risk Level -->
-<label>Risk Level</label>
-<select id="risk" required>
-    <option value="">Select risk...</option>
-    <option>Low</option>
-    <option>Medium</option>
-    <option>High</option>
-</select>
-
-<label>Description</label>
-<textarea id="desc" placeholder="Describe what you observed..." required></textarea>
-
-<label>Photos (optional)</label>
-<input type="file" id="photos" accept="image/*" multiple>
-<div id="preview"></div>
-
-<label>Immediate Actions Taken</label>
-<textarea id="actions"></textarea>
-
-<label>Investigation Required?</label>
-<select id="investigation">
-    <option>No</option>
-    <option>Yes</option>
-</select>
-
-<!-- Hidden GPS fields -->
-<input type="hidden" id="lat">
-<input type="hidden" id="lng">
-
-<button class="submit-btn" onclick="saveObservation()">
-    Submit Observation
-</button>
+<button id="btnSubmit"></button>
 
 <script>
-// Photo preview
-document.getElementById('photos').addEventListener('change', function() {
-    const preview = document.getElementById('preview');
-    preview.innerHTML = "";
-    [...this.files].forEach(file => {
-        const img = document.createElement('img');
-        img.src = URL.createObjectURL(file);
-        preview.appendChild(img);
-    });
+// UI TRANSLATION DICTIONARY
+const translations = {
+    en: {
+        title: "Observation Form",
+        type: "Type",
+        category: "Category",
+        condition: "Describe the condition",
+        risk: "Risk Level",
+        submit: "Submit Observation"
+    },
+    fr: {
+        title: "Formulaire d'observation",
+        type: "Type",
+        category: "Catégorie",
+        condition: "Décrivez la condition",
+        risk: "Niveau de risque",
+        submit: "Soumettre l'observation"
+    },
+    mg: {
+        title: "Taratasy Fandinihana",
+        type: "Karazana",
+        category: "Sokajy",
+        condition: "Farito ny toe-javatra",
+        risk: "Haavon'ny loza",
+        submit: "Alefa ny tatitra"
+    },
+    pt: {
+        title: "Formulário de Observação",
+        type: "Tipo",
+        category: "Categoria",
+        condition: "Descreva a condição",
+        risk: "Nível de risco",
+        submit: "Enviar observação"
+    },
+    hi: {
+        title: "अवलोकन फ़ॉर्म",
+        type: "प्रकार",
+        category: "श्रेणी",
+        condition: "स्थिति का वर्णन करें",
+        risk: "जोखिम स्तर",
+        submit: "प्रस्तुत करें"
+    },
+    ar: {
+        title: "نموذج الملاحظة",
+        type: "النوع",
+        category: "الفئة",
+        condition: "وصف الحالة",
+        risk: "مستوى الخطر",
+        submit: "إرسال الملاحظة"
+    },
+    sw: {
+        title: "Fomu ya Uangalizi",
+        type: "Aina",
+        category: "Kategoria",
+        condition: "Eleza hali",
+        risk: "Kiwango cha hatari",
+        submit: "Tuma Uangalizi"
+    },
+    zh: {
+        title: "观察表",
+        type: "类型",
+        category: "类别",
+        condition: "描述情况",
+        risk: "风险等级",
+        submit: "提交观察"
+    }
+};
+
+// POPULATE LANGUAGE DROPDOWN
+const languageSelect = document.getElementById("languageSelect");
+const languages = {
+    en: "English",
+    fr: "Français",
+    mg: "Malagasy",
+    pt: "Português",
+    hi: "हिन्दी",
+    ar: "العربية",
+    sw: "Kiswahili",
+    zh: "中文"
+};
+
+for (const code in languages) {
+    const opt = document.createElement("option");
+    opt.value = code;
+    opt.textContent = languages[code];
+    languageSelect.appendChild(opt);
+}
+
+// DEFAULT LANGUAGE
+let currentLang = "en";
+languageSelect.value = currentLang;
+
+// APPLY TRANSLATION
+function applyTranslation() {
+    const t = translations[currentLang];
+    document.getElementById("title").textContent = t.title;
+    document.getElementById("lblType").textContent = t.type;
+    document.getElementById("lblCategory").textContent = t.category;
+    document.getElementById("lblCondition").textContent = t.condition;
+    document.getElementById("lblRisk").textContent = t.risk;
+    document.getElementById("btnSubmit").textContent = t.submit;
+}
+
+languageSelect.addEventListener("change", () => {
+    currentLang = languageSelect.value;
+    applyTranslation();
 });
 
-// GPS capture in background
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(pos => {
-        document.getElementById('lat').value = pos.coords.latitude;
-        document.getElementById('lng').value = pos.coords.longitude;
-    });
-}
+applyTranslation();
 
-// Save observation to LocalStorage
+// SAVE OBSERVATION
 function saveObservation() {
+    const obs = JSON.parse(localStorage.getItem("observations") || "[]");
 
-    // Validation
-    if (!document.getElementById('obsType').value ||
-        !document.getElementById('unsafeType').value ||
-        !document.getElementById('category').value ||
-        !document.getElementById('risk').value ||
-        !document.getElementById('desc').value.trim()) {
+    const original = document.getElementById("condition").value;
 
-        alert("Please complete all required fields.");
-        return;
-    }
+    // Placeholder translation (replace with real API later)
+    const translated = original; // For now, store same text
 
-    // Convert photos to preview URLs
-    let photoFiles = document.getElementById('photos').files;
-    let photoArray = [];
+    obs.push({
+        id: "obs-" + Math.random().toString(36).substr(2,9),
+        date: new Date().toISOString().split("T")[0],
+        type: document.getElementById("type").value,
+        category: document.getElementById("category").value,
+        condition_original: original,
+        condition_translated: translated,
+        risk: document.getElementById("risk").value,
+        language: currentLang,
+        status: "Not Actioned"
+    });
 
-    for (let i = 0; i < photoFiles.length; i++) {
-        photoArray.push(URL.createObjectURL(photoFiles[i]));
-    }
-
-    // Build observation object
-    let obs = {
-        name: document.getElementById('name').value,
-        badge: document.getElementById('badge').value,
-        site: document.getElementById('site').value,
-        area: document.getElementById('area').value,
-        type: document.getElementById('obsType').value,
-        condition: document.getElementById('unsafeType').value,
-        category: document.getElementById('category').value,
-        risk: document.getElementById('risk').value,
-        description: document.getElementById('desc').value,
-        actions: document.getElementById('actions').value,
-        investigation: document.getElementById('investigation').value,
-        lat: document.getElementById('lat').value,
-        lng: document.getElementById('lng').value,
-        photos: photoArray,
-        timestamp: new Date().toLocaleString()
-    };
-
-    // Save to LocalStorage
-    let list = JSON.parse(localStorage.getItem("observations") || "[]");
-    list.push(obs);
-    localStorage.setItem("observations", JSON.stringify(list));
-
-    // Redirect to dashboard
-    window.location.href = "dashboard.html";
+    localStorage.setItem("observations", JSON.stringify(obs));
+    alert("Observation submitted!");
+    window.location.href = "welcome.html";
 }
+
+document.getElementById("btnSubmit").addEventListener("click", saveObservation);
 </script>
 
 </body>
