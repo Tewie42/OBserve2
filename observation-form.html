@@ -179,12 +179,33 @@ const translations = {
         actions: "Fepetra haingana natao",
         investigation: "Mila fanadihadiana?",
         submit: "Alefa ny tatitra"
+    },
+    hi: {
+        title: "सुरक्षा अवलोकन फ़ॉर्म",
+        name: "नाम",
+        badge: "बैज नंबर",
+        site: "साइट",
+        area: "क्षेत्र",
+        type: "अवलोकन प्रकार",
+        condition: "असुरक्षित कार्य / स्थिति",
+        category: "श्रेणी",
+        risk: "जोखिम स्तर",
+        description: "विवरण",
+        photos: "फ़ोटो (वैकल्पिक)",
+        actions: "तत्काल किए गए कार्य",
+        investigation: "क्या जांच आवश्यक है?",
+        submit: "अवलोकन जमा करें"
     }
 };
 
 // Populate language dropdown
 const languageSelect = document.getElementById("languageSelect");
-const languages = { en: "English", fr: "Français", mg: "Malagasy" };
+const languages = { 
+    en: "English", 
+    fr: "Français", 
+    mg: "Malagasy",
+    hi: "हिन्दी"
+};
 
 for (const code in languages) {
     const opt = document.createElement("option");
