@@ -28,19 +28,38 @@
             font-size: 16px;
         }
 
+        /* Top bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .back-btn {
+            background: #555;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
         .lang-select {
-            position: fixed;
-            top: 10px;
-            left: 10px;
+            padding: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
 
 <body>
 
-<!-- LANGUAGE SELECTOR -->
-<div class="lang-select">
-    <select id="languageSelect"></select>
+<!-- TOP BAR -->
+<div class="top-bar">
+    <a class="back-btn" href="index.html">← Back</a>
+
+    <select id="languageSelect" class="lang-select"></select>
 </div>
 
 <h2 id="title">Observation Form</h2>
@@ -185,7 +204,7 @@ function saveObservation() {
     const original = document.getElementById("condition").value;
 
     // Placeholder translation (replace with real API later)
-    const translated = original; // For now, store same text
+    const translated = original;
 
     obs.push({
         id: "obs-" + Math.random().toString(36).substr(2,9),
