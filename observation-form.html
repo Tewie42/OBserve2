@@ -28,7 +28,6 @@
             font-size: 16px;
         }
 
-        /* Top bar */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -58,7 +57,6 @@
 <!-- TOP BAR -->
 <div class="top-bar">
     <a class="back-btn" href="index.html">← Back</a>
-
     <select id="languageSelect" class="lang-select"></select>
 </div>
 
@@ -77,40 +75,16 @@
 <input type="text" id="area">
 
 <label id="lblType">Observation Type</label>
-<select id="type">
-    <option value="Unsafe Act">Unsafe Act</option>
-    <option value="Unsafe Condition">Unsafe Condition</option>
-    <option value="Near Miss">Near Miss</option>
-</select>
+<select id="type"></select>
 
 <label id="lblCondition">Unsafe Act / Condition</label>
-<select id="conditionType">
-    <option value="Slip/Trip/Fall">Slip / Trip / Fall</option>
-    <option value="No PPE">No PPE</option>
-    <option value="Blocked Walkway">Blocked Walkway</option>
-    <option value="Equipment Misuse">Equipment Misuse</option>
-    <option value="Other">Other</option>
-</select>
+<select id="conditionType"></select>
 
 <label id="lblCategory">Category</label>
-<select id="category">
-    <option value="Housekeeping">Housekeeping</option>
-    <option value="PPE">PPE</option>
-    <option value="Unsafe Acts">Unsafe Acts</option>
-    <option value="Unsafe Conditions">Unsafe Conditions</option>
-    <option value="Equipment / Tools">Equipment / Tools</option>
-    <option value="Traffic / Vehicles">Traffic / Vehicles</option>
-    <option value="Environment">Environment</option>
-    <option value="Fire Safety">Fire Safety</option>
-    <option value="Other">Other</option>
-</select>
+<select id="category"></select>
 
 <label id="lblRisk">Risk Level</label>
-<select id="risk">
-    <option value="Low">Low</option>
-    <option value="Medium">Medium</option>
-    <option value="High">High</option>
-</select>
+<select id="risk"></select>
 
 <label id="lblDescription">Description</label>
 <textarea id="description" rows="4"></textarea>
@@ -122,15 +96,12 @@
 <textarea id="actions" rows="3"></textarea>
 
 <label id="lblInvestigation">Investigation Required?</label>
-<select id="investigation">
-    <option value="No">No</option>
-    <option value="Yes">Yes</option>
-</select>
+<select id="investigation"></select>
 
 <button id="btnSubmit">Submit Observation</button>
 
 <script>
-// UI TRANSLATION DICTIONARY
+// TRANSLATION DICTIONARY
 const translations = {
     en: {
         title: "Safety Observation Form",
@@ -139,15 +110,37 @@ const translations = {
         site: "Site",
         area: "Area",
         type: "Observation Type",
+        typeOptions: ["Unsafe Act", "Unsafe Condition", "Near Miss"],
         condition: "Unsafe Act / Condition",
+        conditionOptions: [
+            "Slip / Trip / Fall",
+            "No PPE",
+            "Blocked Walkway",
+            "Equipment Misuse",
+            "Other"
+        ],
         category: "Category",
+        categoryOptions: [
+            "Housekeeping",
+            "PPE",
+            "Unsafe Acts",
+            "Unsafe Conditions",
+            "Equipment / Tools",
+            "Traffic / Vehicles",
+            "Environment",
+            "Fire Safety",
+            "Other"
+        ],
         risk: "Risk Level",
+        riskOptions: ["Low", "Medium", "High"],
         description: "Description",
         photos: "Photos (optional)",
         actions: "Immediate Actions Taken",
         investigation: "Investigation Required?",
+        investigationOptions: ["No", "Yes"],
         submit: "Submit Observation"
     },
+
     fr: {
         title: "Formulaire d'observation de sécurité",
         name: "Nom",
@@ -155,15 +148,37 @@ const translations = {
         site: "Site",
         area: "Zone",
         type: "Type d'observation",
+        typeOptions: ["Acte dangereux", "Condition dangereuse", "Quasi-accident"],
         condition: "Acte / Condition dangereuse",
+        conditionOptions: [
+            "Glissade / Trébuchement / Chute",
+            "Pas de EPI",
+            "Passage bloqué",
+            "Mauvaise utilisation d'équipement",
+            "Autre"
+        ],
         category: "Catégorie",
+        categoryOptions: [
+            "Propreté",
+            "EPI",
+            "Actes dangereux",
+            "Conditions dangereuses",
+            "Équipement / Outils",
+            "Trafic / Véhicules",
+            "Environnement",
+            "Sécurité incendie",
+            "Autre"
+        ],
         risk: "Niveau de risque",
+        riskOptions: ["Faible", "Moyen", "Élevé"],
         description: "Description",
         photos: "Photos (optionnel)",
         actions: "Actions immédiates prises",
         investigation: "Enquête requise?",
+        investigationOptions: ["Non", "Oui"],
         submit: "Soumettre l'observation"
     },
+
     mg: {
         title: "Taratasy Fandinihana ny Fiarovana",
         name: "Anarana",
@@ -171,15 +186,37 @@ const translations = {
         site: "Toerana",
         area: "Faritra",
         type: "Karazana Fandinihana",
+        typeOptions: ["Fihetsika mampidi-doza", "Toe-javatra mampidi-doza", "Saika loza"],
         condition: "Fihetsika / Toe-javatra mampidi-doza",
+        conditionOptions: [
+            "Solafaka / Tafintohina / Nianjera",
+            "Tsy misy PPE",
+            "Lalana voasakana",
+            "Fampiasana fitaovana tsy mety",
+            "Hafa"
+        ],
         category: "Sokajy",
+        categoryOptions: [
+            "Fahadiovana",
+            "PPE",
+            "Fihetsika mampidi-doza",
+            "Toe-javatra mampidi-doza",
+            "Fitaovana / Tools",
+            "Fiara / Fifamoivoizana",
+            "Tontolo iainana",
+            "Fiarovana amin'ny afo",
+            "Hafa"
+        ],
         risk: "Haavon'ny Loza",
+        riskOptions: ["Ambany", "Antonony", "Avo"],
         description: "Famaritana",
         photos: "Sary (tsy voatery)",
         actions: "Fepetra haingana natao",
         investigation: "Mila fanadihadiana?",
+        investigationOptions: ["Tsia", "Eny"],
         submit: "Alefa ny tatitra"
     },
+
     hi: {
         title: "सुरक्षा अवलोकन फ़ॉर्म",
         name: "नाम",
@@ -187,25 +224,80 @@ const translations = {
         site: "साइट",
         area: "क्षेत्र",
         type: "अवलोकन प्रकार",
+        typeOptions: ["असुरक्षित कार्य", "असुरक्षित स्थिति", "निकट दुर्घटना"],
         condition: "असुरक्षित कार्य / स्थिति",
+        conditionOptions: [
+            "फिसलना / ठोकर / गिरना",
+            "पीपीई नहीं",
+            "अवरोधित मार्ग",
+            "उपकरण का गलत उपयोग",
+            "अन्य"
+        ],
         category: "श्रेणी",
+        categoryOptions: [
+            "हाउसकीपिंग",
+            "पीपीई",
+            "असुरक्षित कार्य",
+            "असुरक्षित स्थितियाँ",
+            "उपकरण / औज़ार",
+            "यातायात / वाहन",
+            "पर्यावरण",
+            "अग्नि सुरक्षा",
+            "अन्य"
+        ],
         risk: "जोखिम स्तर",
+        riskOptions: ["कम", "मध्यम", "उच्च"],
         description: "विवरण",
         photos: "फ़ोटो (वैकल्पिक)",
         actions: "तत्काल किए गए कार्य",
         investigation: "क्या जांच आवश्यक है?",
+        investigationOptions: ["नहीं", "हाँ"],
         submit: "अवलोकन जमा करें"
-    }
+    },
+    
+    tl: {
+    title: "Form ng Safety Observation",
+    name: "Pangalan",
+    badge: "Badge Number",
+    site: "Site",
+    area: "Lugar",
+    type: "Uri ng Obserbasyon",
+    typeOptions: ["Hindi Ligtas na Gawain", "Hindi Ligtas na Kondisyon", "Muntikang Aksidente"],
+    condition: "Hindi Ligtas na Gawain / Kondisyon",
+    conditionOptions: [
+        "Dulas / Tisod / Pagkahulog",
+        "Walang PPE",
+        "Baradong Daanan",
+        "Maling Paggamit ng Kagamitan",
+        "Iba pa"
+    ],
+    category: "Kategorya",
+    categoryOptions: [
+        "Housekeeping",
+        "PPE",
+        "Hindi Ligtas na Gawain",
+        "Hindi Ligtas na Kondisyon",
+        "Kagamitan / Tools",
+        "Trapiko / Sasakyan",
+        "Kapaligiran",
+        "Fire Safety",
+        "Iba pa"
+    ],
+    risk: "Antas ng Panganib",
+    riskOptions: ["Mababa", "Katamtaman", "Mataas"],
+    description: "Paglalarawan",
+    photos: "Mga Larawan (opsyonal)",
+    actions: "Agarang Aksyon na Ginawa",
+    investigation: "Kailangan ba ng Imbestigasyon?",
+    investigationOptions: ["Hindi", "Oo"],
+    submit: "Isumite ang Obserbasyon"
+}
 };
 
-// Populate language dropdown
+// LANGUAGE DROPDOWN
 const languageSelect = document.getElementById("languageSelect");
-const languages = { 
-    en: "English", 
-    fr: "Français", 
-    mg: "Malagasy",
-    hi: "हिन्दी"
-};
+const languages = { en: "English", fr: "Français", mg: "Malagasy", hi: "हिन्दी",tl: "Tagalog"
+                  };
 
 for (const code in languages) {
     const opt = document.createElement("option");
@@ -217,7 +309,7 @@ for (const code in languages) {
 let currentLang = "en";
 languageSelect.value = currentLang;
 
-// Apply translation to form labels
+// APPLY TRANSLATION
 function applyTranslation() {
     const t = translations[currentLang];
 
@@ -235,6 +327,24 @@ function applyTranslation() {
     document.getElementById("lblActions").textContent = t.actions;
     document.getElementById("lblInvestigation").textContent = t.investigation;
     document.getElementById("btnSubmit").textContent = t.submit;
+
+    // Populate dropdowns
+    fillSelect("type", t.typeOptions);
+    fillSelect("conditionType", t.conditionOptions);
+    fillSelect("category", t.categoryOptions);
+    fillSelect("risk", t.riskOptions);
+    fillSelect("investigation", t.investigationOptions);
+}
+
+function fillSelect(id, options) {
+    const select = document.getElementById(id);
+    select.innerHTML = "";
+    options.forEach(o => {
+        const opt = document.createElement("option");
+        opt.value = o;
+        opt.textContent = o;
+        select.appendChild(opt);
+    });
 }
 
 languageSelect.addEventListener("change", () => {
@@ -250,9 +360,6 @@ document.getElementById("btnSubmit").addEventListener("click", () => {
 
     const original = document.getElementById("description").value;
 
-    // Placeholder translation (same text for now)
-    const translated = original;
-
     obs.push({
         id: "obs-" + Math.random().toString(36).substr(2,9),
         date: new Date().toISOString().split("T")[0],
@@ -265,7 +372,7 @@ document.getElementById("btnSubmit").addEventListener("click", () => {
         category: document.getElementById("category").value,
         risk: document.getElementById("risk").value,
         description_original: original,
-        description_translated: translated,
+        description_translated: original, // placeholder
         actions: document.getElementById("actions").value,
         investigation: document.getElementById("investigation").value,
         language: currentLang,
