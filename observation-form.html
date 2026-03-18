@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Observation Form</title>
+    <title>Safety Observation Form</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <style>
@@ -37,7 +37,7 @@
         }
 
         .back-btn {
-            background: #555;
+            background: #2a6f37;
             color: white;
             padding: 6px 12px;
             border-radius: 6px;
@@ -62,111 +62,129 @@
     <select id="languageSelect" class="lang-select"></select>
 </div>
 
-<h2 id="title">Observation Form</h2>
+<h2 id="title">Safety Observation Form</h2>
 
-<label id="lblType"></label>
+<label id="lblName">Name</label>
+<input type="text" id="name">
+
+<label id="lblBadge">Badge Number</label>
+<input type="text" id="badge">
+
+<label id="lblSite">Site</label>
+<input type="text" id="site">
+
+<label id="lblArea">Area</label>
+<input type="text" id="area">
+
+<label id="lblType">Observation Type</label>
 <select id="type">
     <option value="Unsafe Act">Unsafe Act</option>
     <option value="Unsafe Condition">Unsafe Condition</option>
     <option value="Near Miss">Near Miss</option>
 </select>
 
-<label id="lblCategory"></label>
-<input type="text" id="category">
+<label id="lblCondition">Unsafe Act / Condition</label>
+<select id="conditionType">
+    <option value="Slip/Trip/Fall">Slip / Trip / Fall</option>
+    <option value="No PPE">No PPE</option>
+    <option value="Blocked Walkway">Blocked Walkway</option>
+    <option value="Equipment Misuse">Equipment Misuse</option>
+    <option value="Other">Other</option>
+</select>
 
-<label id="lblCondition"></label>
-<textarea id="condition" rows="4"></textarea>
+<label id="lblCategory">Category</label>
+<select id="category">
+    <option value="Housekeeping">Housekeeping</option>
+    <option value="PPE">PPE</option>
+    <option value="Unsafe Acts">Unsafe Acts</option>
+    <option value="Unsafe Conditions">Unsafe Conditions</option>
+    <option value="Equipment / Tools">Equipment / Tools</option>
+    <option value="Traffic / Vehicles">Traffic / Vehicles</option>
+    <option value="Environment">Environment</option>
+    <option value="Fire Safety">Fire Safety</option>
+    <option value="Other">Other</option>
+</select>
 
-<label id="lblRisk"></label>
+<label id="lblRisk">Risk Level</label>
 <select id="risk">
     <option value="Low">Low</option>
     <option value="Medium">Medium</option>
     <option value="High">High</option>
 </select>
 
-<button id="btnSubmit"></button>
+<label id="lblDescription">Description</label>
+<textarea id="description" rows="4"></textarea>
+
+<label id="lblPhotos">Photos (optional)</label>
+<input type="file" id="photos" multiple>
+
+<label id="lblActions">Immediate Actions Taken</label>
+<textarea id="actions" rows="3"></textarea>
+
+<label id="lblInvestigation">Investigation Required?</label>
+<select id="investigation">
+    <option value="No">No</option>
+    <option value="Yes">Yes</option>
+</select>
+
+<button id="btnSubmit">Submit Observation</button>
 
 <script>
 // UI TRANSLATION DICTIONARY
 const translations = {
     en: {
-        title: "Observation Form",
-        type: "Type",
+        title: "Safety Observation Form",
+        name: "Name",
+        badge: "Badge Number",
+        site: "Site",
+        area: "Area",
+        type: "Observation Type",
+        condition: "Unsafe Act / Condition",
         category: "Category",
-        condition: "Describe the condition",
         risk: "Risk Level",
+        description: "Description",
+        photos: "Photos (optional)",
+        actions: "Immediate Actions Taken",
+        investigation: "Investigation Required?",
         submit: "Submit Observation"
     },
     fr: {
-        title: "Formulaire d'observation",
-        type: "Type",
+        title: "Formulaire d'observation de sécurité",
+        name: "Nom",
+        badge: "Numéro de badge",
+        site: "Site",
+        area: "Zone",
+        type: "Type d'observation",
+        condition: "Acte / Condition dangereuse",
         category: "Catégorie",
-        condition: "Décrivez la condition",
         risk: "Niveau de risque",
+        description: "Description",
+        photos: "Photos (optionnel)",
+        actions: "Actions immédiates prises",
+        investigation: "Enquête requise?",
         submit: "Soumettre l'observation"
     },
     mg: {
-        title: "Taratasy Fandinihana",
-        type: "Karazana",
+        title: "Taratasy Fandinihana ny Fiarovana",
+        name: "Anarana",
+        badge: "Laharana Badge",
+        site: "Toerana",
+        area: "Faritra",
+        type: "Karazana Fandinihana",
+        condition: "Fihetsika / Toe-javatra mampidi-doza",
         category: "Sokajy",
-        condition: "Farito ny toe-javatra",
-        risk: "Haavon'ny loza",
+        risk: "Haavon'ny Loza",
+        description: "Famaritana",
+        photos: "Sary (tsy voatery)",
+        actions: "Fepetra haingana natao",
+        investigation: "Mila fanadihadiana?",
         submit: "Alefa ny tatitra"
-    },
-    pt: {
-        title: "Formulário de Observação",
-        type: "Tipo",
-        category: "Categoria",
-        condition: "Descreva a condição",
-        risk: "Nível de risco",
-        submit: "Enviar observação"
-    },
-    hi: {
-        title: "अवलोकन फ़ॉर्म",
-        type: "प्रकार",
-        category: "श्रेणी",
-        condition: "स्थिति का वर्णन करें",
-        risk: "जोखिम स्तर",
-        submit: "प्रस्तुत करें"
-    },
-    ar: {
-        title: "نموذج الملاحظة",
-        type: "النوع",
-        category: "الفئة",
-        condition: "وصف الحالة",
-        risk: "مستوى الخطر",
-        submit: "إرسال الملاحظة"
-    },
-    sw: {
-        title: "Fomu ya Uangalizi",
-        type: "Aina",
-        category: "Kategoria",
-        condition: "Eleza hali",
-        risk: "Kiwango cha hatari",
-        submit: "Tuma Uangalizi"
-    },
-    zh: {
-        title: "观察表",
-        type: "类型",
-        category: "类别",
-        condition: "描述情况",
-        risk: "风险等级",
-        submit: "提交观察"
     }
 };
 
-// POPULATE LANGUAGE DROPDOWN
+// Populate language dropdown
 const languageSelect = document.getElementById("languageSelect");
-const languages = {
-    en: "English",
-    fr: "Français",
-    mg: "Malagasy",
-    pt: "Português",
-    hi: "हिन्दी",
-    ar: "العربية",
-    sw: "Kiswahili",
-    zh: "中文"
-};
+const languages = { en: "English", fr: "Français", mg: "Malagasy" };
 
 for (const code in languages) {
     const opt = document.createElement("option");
@@ -175,18 +193,26 @@ for (const code in languages) {
     languageSelect.appendChild(opt);
 }
 
-// DEFAULT LANGUAGE
 let currentLang = "en";
 languageSelect.value = currentLang;
 
-// APPLY TRANSLATION
+// Apply translation to form labels
 function applyTranslation() {
     const t = translations[currentLang];
+
     document.getElementById("title").textContent = t.title;
+    document.getElementById("lblName").textContent = t.name;
+    document.getElementById("lblBadge").textContent = t.badge;
+    document.getElementById("lblSite").textContent = t.site;
+    document.getElementById("lblArea").textContent = t.area;
     document.getElementById("lblType").textContent = t.type;
-    document.getElementById("lblCategory").textContent = t.category;
     document.getElementById("lblCondition").textContent = t.condition;
+    document.getElementById("lblCategory").textContent = t.category;
     document.getElementById("lblRisk").textContent = t.risk;
+    document.getElementById("lblDescription").textContent = t.description;
+    document.getElementById("lblPhotos").textContent = t.photos;
+    document.getElementById("lblActions").textContent = t.actions;
+    document.getElementById("lblInvestigation").textContent = t.investigation;
     document.getElementById("btnSubmit").textContent = t.submit;
 }
 
@@ -198,22 +224,29 @@ languageSelect.addEventListener("change", () => {
 applyTranslation();
 
 // SAVE OBSERVATION
-function saveObservation() {
+document.getElementById("btnSubmit").addEventListener("click", () => {
     const obs = JSON.parse(localStorage.getItem("observations") || "[]");
 
-    const original = document.getElementById("condition").value;
+    const original = document.getElementById("description").value;
 
-    // Placeholder translation (replace with real API later)
+    // Placeholder translation (same text for now)
     const translated = original;
 
     obs.push({
         id: "obs-" + Math.random().toString(36).substr(2,9),
         date: new Date().toISOString().split("T")[0],
+        name: document.getElementById("name").value,
+        badge: document.getElementById("badge").value,
+        site: document.getElementById("site").value,
+        area: document.getElementById("area").value,
         type: document.getElementById("type").value,
+        conditionType: document.getElementById("conditionType").value,
         category: document.getElementById("category").value,
-        condition_original: original,
-        condition_translated: translated,
         risk: document.getElementById("risk").value,
+        description_original: original,
+        description_translated: translated,
+        actions: document.getElementById("actions").value,
+        investigation: document.getElementById("investigation").value,
         language: currentLang,
         status: "Not Actioned"
     });
@@ -221,9 +254,7 @@ function saveObservation() {
     localStorage.setItem("observations", JSON.stringify(obs));
     alert("Observation submitted!");
     window.location.href = "welcome.html";
-}
-
-document.getElementById("btnSubmit").addEventListener("click", saveObservation);
+});
 </script>
 
 </body>
