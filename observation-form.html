@@ -247,7 +247,6 @@ function applyTranslation() {
     document.getElementById("lblArea").textContent = t.area;
     document.getElementById("lblType").textContent = t.type;
     document.getElementById("lblCondition").textContent = t.condition;
-    document.getElementById("lblCategory").textContent = t.category;
     document.getElementById("lblRisk").textContent = t.risk;
     document.getElementById("lblDescription").textContent = t.description;
     document.getElementById("lblPhotos").textContent = t.photos;
@@ -258,7 +257,6 @@ function applyTranslation() {
     // Populate dropdowns
     fillSelect("type", t.typeOptions);
     fillSelect("conditionType", t.conditionOptions);
-    fillSelect("category", t.categoryOptions);
     fillSelect("risk", t.riskOptions);
     fillSelect("investigation", t.investigationOptions);
 }
@@ -296,7 +294,6 @@ document.getElementById("btnSubmit").addEventListener("click", () => {
         area: document.getElementById("area").value,
         type: document.getElementById("type").value,
         conditionType: document.getElementById("conditionType").value,
-        category: document.getElementById("category").value,
         risk: document.getElementById("risk").value,
         description_original: original,
         description_translated: original, // placeholder
