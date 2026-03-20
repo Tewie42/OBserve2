@@ -278,8 +278,30 @@ languageSelect.addEventListener("change", () => {
 
 applyTranslation();
 
+async function translateToEnglish(text, lang) {
+    if (!text || lang === "en") return text;
+
+    const endpoint = "https://api.cognitive.microsofttranslator.com/";
+    const key = "5LaZtjcxdkhQNoa1g6OeUrYEw1g8Pr6kRScxk9U40uv8G9pVpk25JQQJ99CCACrIdLPXJ3w3AAAbACOGmjxG";
+    const region = "southafricanorth";
+
+    const response = await fetch(endpoint + "/translate?api-version=3.0&to=en", {
+        method: "POST",
+        headers: {
+            "Ocp-Apim-Subscription-Key": key,
+            "Ocp-Apim-Subscription-Region": region,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify([{ Text: text }])
+    });
+
+    const data = await response.json();
+    return data[0].translations[0].text;
+}
+    
 // SAVE OBSERVATION
-document.getElementById("btnSubmit").addEventListener("click", () => {
+document.getElementById("btnSubmit").addEventListener("click", async () => {
+    const translated = await translateToEnglish(original, currentLang);
     const obs = JSON.parse(localStorage.getItem("observations") || "[]");
 
     const original = document.getElementById("description").value;
@@ -295,7 +317,7 @@ document.getElementById("btnSubmit").addEventListener("click", () => {
         conditionType: document.getElementById("conditionType").value,
         risk: document.getElementById("risk").value,
         description_original: original,
-        description_translated: original, // placeholder
+        description_translated: translated,
         actions: document.getElementById("actions").value,
         investigation: document.getElementById("investigation").value,
         language: currentLang,
