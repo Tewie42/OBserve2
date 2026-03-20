@@ -301,10 +301,12 @@ async function translateToEnglish(text, lang) {
     
 // SAVE OBSERVATION
 document.getElementById("btnSubmit").addEventListener("click", async () => {
-    const translated = await translateToEnglish(original, currentLang);
     const obs = JSON.parse(localStorage.getItem("observations") || "[]");
 
     const original = document.getElementById("description").value;
+
+    // Translate using Azure
+    const translated = await translateToEnglish(original, currentLang);
 
     obs.push({
         id: "obs-" + Math.random().toString(36).substr(2,9),
@@ -316,8 +318,10 @@ document.getElementById("btnSubmit").addEventListener("click", async () => {
         type: document.getElementById("type").value,
         conditionType: document.getElementById("conditionType").value,
         risk: document.getElementById("risk").value,
+
         description_original: original,
         description_translated: translated,
+
         actions: document.getElementById("actions").value,
         investigation: document.getElementById("investigation").value,
         language: currentLang,
@@ -326,7 +330,9 @@ document.getElementById("btnSubmit").addEventListener("click", async () => {
 
     localStorage.setItem("observations", JSON.stringify(obs));
     alert("Observation submitted!");
-    window.location.href = "welcome.html";
+
+    // FIXED redirect
+    window.location.href = "index.html";
 });
 </script>
 
