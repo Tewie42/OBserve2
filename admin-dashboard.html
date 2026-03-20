@@ -47,11 +47,34 @@
             border: 1px solid #ccc;
         }
 
+        .view-toggle {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        .view-toggle button {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 2px solid #ccc;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .view-toggle button.active {
+            background: #2a6f37;
+            color: white;
+            border-color: #2a6f37;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
             font-size: 13px;
+            display: none;
+        }
+        table.active {
+            display: table;
         }
         th, td {
             padding: 8px;
@@ -100,6 +123,47 @@
             font-size: 12px;
             color: #555;
         }
+
+        /* Observation Card Styles */
+        #obsContainer {
+            display: none;
+        }
+        #obsContainer.active {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .obs-block {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            background: #f9f9f9;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .obs-block h3 {
+            margin-top: 0;
+            color: #2a6f37;
+            border-bottom: 2px solid #2a6f37;
+            padding-bottom: 10px;
+        }
+        .obs-block p {
+            margin: 8px 0;
+            font-size: 13px;
+        }
+        .obs-block strong {
+            color: #333;
+        }
+        .desc-box {
+    background: #f4f4f4;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+.desc-box p {
+    margin: 4px 0;
+}
     </style>
 </head>
 <body>
@@ -155,9 +219,16 @@
     </select>
 </div>
 
+<!-- VIEW TOGGLE -->
+<div class="section-title">View</div>
+<div class="view-toggle">
+    <button class="active" onclick="switchView('table')">📊 Table View</button>
+    <button onclick="switchView('cards')">🃏 Card View</button>
+</div>
+
 <!-- OBSERVATION TABLE -->
 <div class="section-title">Observations</div>
-<table id="obsTable">
+<table id="obsTable" class="active">
     <thead>
         <tr>
             <th>Date</th>
@@ -174,6 +245,9 @@
     </thead>
     <tbody></tbody>
 </table>
+
+<!-- OBSERVATION CARDS CONTAINER -->
+<div id="obsContainer"></div>
 
 <!-- TOOLBOX TALK SUGGESTIONS -->
 <div class="section-title">Suggested Toolbox Talks</div>
@@ -211,6 +285,7 @@ function isThisWeek(dateStr) {
 
 let allObs = [];
 let filteredObs = [];
+let currentView = "table"; // Track current view
 
 function initFilters() {
     const users = getUsers();
@@ -275,9 +350,35 @@ function applyFilters() {
         return true;
     });
 
-    renderTable();
+    if (currentView === "table") {
+        renderTable();
+    } else {
+        renderCards();
+    }
     updateKpis();
     updateTalkSuggestions();
+}
+
+function switchView(view) {
+    currentView = view;
+
+    // Update button states
+    document.querySelectorAll(".view-toggle button").forEach(btn => btn.classList.remove("active"));
+    event.target.classList.add("active");
+
+    // Toggle visibility
+    const table = document.getElementById("obsTable");
+    const container = document.getElementById("obsContainer");
+
+    if (view === "table") {
+        table.classList.add("active");
+        container.classList.remove("active");
+        renderTable();
+    } else {
+        table.classList.remove("active");
+        container.classList.add("active");
+        renderCards();
+    }
 }
 
 function renderTable() {
@@ -290,10 +391,10 @@ function renderTable() {
 
         tr.innerHTML = `
             <td>${o.date || ""}</td>
-            <td>${o.userName || o.user || ""}</td>
+            <td>${o.userName || o.user || o.name || ""}</td>
             <td>${o.position || ""}</td>
             <td>${o.type || ""}</td>
-            <td>${o.condition_translated || o.condition || ""}</td>
+            <td>${o.condition_translated || o.conditionType || o.condition || ""}</td>
             <td>${o.category || ""}</td>
             <td>${o.risk || ""}</td>
             <td>${o.status || ""}</td>
@@ -303,6 +404,44 @@ function renderTable() {
             </td>
         `;
         tbody.appendChild(tr);
+    });
+}
+
+function renderCards() {
+    const container = document.getElementById("obsContainer");
+    container.innerHTML = "";
+
+    filteredObs.forEach(o => {
+        const card = document.createElement("div");
+        card.className = "obs-block";
+
+        card.innerHTML = `
+            <h3>Observation ID: ${o.id || "N/A"}</h3>
+
+            <p><strong>Date:</strong> ${o.date || "N/A"}</p>
+            <p><strong>Name:</strong> ${o.userName || o.user || o.name || "N/A"}</p>
+            <p><strong>Badge:</strong> ${o.badge || "N/A"}</p>
+            <p><strong>Site:</strong> ${o.site || "N/A"}</p>
+            <p><strong>Area:</strong> ${o.area || "N/A"}</p>
+            <p><strong>Type:</strong> ${o.type || "N/A"}</p>
+            <p><strong>Condition:</strong> ${o.condition_translated || o.conditionType || o.condition || "N/A"}</p>
+            <p><strong>Risk:</strong> ${o.risk || "N/A"}</p>
+
+            <div class="desc-box">
+                <p><strong>Original ${o.language ? `(${o.language})` : ""}:</strong></p>
+                <p>${o.description_original || "N/A"}</p>
+
+                <p><strong>English Translation:</strong></p>
+                <p>${o.description_translated || "N/A"}</p>
+            </div>
+
+            <p><strong>Actions Taken:</strong> ${o.actions || "N/A"}</p>
+            <p><strong>Investigation Required:</strong> ${o.investigation || "N/A"}</p>
+            <p><strong>Status:</strong> <span style="color: ${o.status === 'Actioned' ? '#2a6f37' : '#d32f2f'}">${o.status || "N/A"}</span></p>
+            ${o.status !== "Actioned" ? `<button class="btn-action" onclick="markActioned('${o.id}')">Mark Actioned</button>` : ""}
+        `;
+
+        container.appendChild(card);
     });
 }
 
