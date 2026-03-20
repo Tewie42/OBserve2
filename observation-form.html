@@ -11,10 +11,21 @@
         <input type="text" id="userName" name="userName" required>
 
         <label for="position">Position:</label>
-        <input type="text" id="position" name="position" required>
+        <select id="position" name="position" required>
+            <option value="position1">Position 1</option>
+            <option value="position2">Position 2</option>
+            <option value="position3">Position 3</option>
+        </select>
 
         <label for="category">Category:</label>
-        <input type="text" id="category" name="category" required>
+        <select id="category" name="category" required>
+            <option value="category1">Category 1</option>
+            <option value="category2">Category 2</option>
+            <option value="category3">Category 3</option>
+        </select>
+
+        <label for="observation">Observation:</label>
+        <textarea id="observation" name="observation" required></textarea>
 
         <button type="submit">Submit</button>
     </form>
@@ -22,14 +33,39 @@
     <script>
         document.getElementById('observation-form').onsubmit = function(event) {
             event.preventDefault();
-            const observation = {
-                userName: document.getElementById('userName').value,
-                position: document.getElementById('position').value,
-                category: document.getElementById('category').value,
-                // other existing properties...
-            };
-            // Save observation logic here
+            const userName = document.getElementById('userName').value;
+            const position = document.getElementById('position').value;
+            const category = document.getElementById('category').value;
+            const observation = document.getElementById('observation').value;
+
+            // Save data logic here
+            console.log({ userName, position, category, observation });
         };
     </script>
 </body>
 </html>
+
+
+// Translation dictionaries
+const translations = {
+    en: {
+        position: { position1: 'Position 1', position2: 'Position 2', position3: 'Position 3' },
+        category: { category1: 'Category 1', category2: 'Category 2', category3: 'Category 3' }
+    },
+    fr: {
+        position: { position1: 'Poste 1', position2: 'Poste 2', position3: 'Poste 3' },
+        category: { category1: 'Catégorie 1', category2: 'Catégorie 2', category3: 'Catégorie 3' }
+    },
+    mg: {
+        position: { position1: 'Toerena 1', position2: 'Toerena 2', position3: 'Toerena 3' },
+        category: { category1: 'Sokaj 1', category2: 'Sokaj 2', category3: 'Sokaj 3' }
+    },
+    hi: {
+        position: { position1: 'पद 1', position2: 'पद 2', position3: 'पद 3' },
+        category: { category1: 'श्रेणी 1', category2: 'श्रेणी 2', category3: 'श्रेणी 3' }
+    },
+    tl: {
+        position: { position1: 'Posisyon 1', position2: 'Posisyon 2', position3: 'Posisyon 3' },
+        category: { category1: 'Kategorya 1', category2: 'Kategorya 2', category3: 'Kategorya 3' }
+    }
+};
