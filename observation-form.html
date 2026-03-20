@@ -80,9 +80,6 @@
 <label id="lblCondition">Unsafe Act / Condition</label>
 <select id="conditionType"></select>
 
-<label id="lblCategory">Category</label>
-<select id="category"></select>
-
 <label id="lblRisk">Risk Level</label>
 <select id="risk"></select>
 
@@ -116,18 +113,7 @@ const translations = {
             "Unsafe act",
             "Unsafe condition",
             "Natural",
-        ],
-        category: "Category",
-        categoryOptions: [
-            "Housekeeping",
-            "PPE",
-            "Unsafe Acts",
-            "Unsafe Conditions",
-            "Equipment / Tools",
-            "Traffic / Vehicles",
-            "Environment",
-            "Fire Safety",
-            "Other"
+    
         ],
         risk: "Risk Level",
         riskOptions: ["Low", "Medium", "High"],
@@ -140,118 +126,75 @@ const translations = {
     },
 
     fr: {
-        title: "Formulaire d'observation de sécurité",
-        name: "Nom",
-        badge: "Numéro de badge",
-        site: "Site",
-        area: "Zone",
-        type: "Type d'observation",
-        typeOptions: ["Acte dangereux", "Condition dangereuse", "Quasi-accident"],
-        condition: "Acte / Condition dangereuse",
-        conditionOptions: [
-            "Glissade / Trébuchement / Chute",
-            "Pas de EPI",
-            "Passage bloqué",
-            "Mauvaise utilisation d'équipement",
-            "Autre"
-        ],
-        category: "Catégorie",
-        categoryOptions: [
-            "Propreté",
-            "EPI",
-            "Actes dangereux",
-            "Conditions dangereuses",
-            "Équipement / Outils",
-            "Trafic / Véhicules",
-            "Environnement",
-            "Sécurité incendie",
-            "Autre"
-        ],
-        risk: "Niveau de risque",
-        riskOptions: ["Faible", "Moyen", "Élevé"],
-        description: "Description",
-        photos: "Photos (optionnel)",
-        actions: "Actions immédiates prises",
-        investigation: "Enquête requise?",
-        investigationOptions: ["Non", "Oui"],
-        submit: "Soumettre l'observation"
-    },
+    title: "Formulaire d'observation de sécurité",
+    name: "Nom",
+    badge: "Numéro de badge",
+    site: "Site",
+    area: "Zone",
+    type: "Type d'observation",
+    typeOptions: ["Santé", "Environnement", "Sécurité"],
+    condition: "Acte / Condition dangereuse",
+    conditionOptions: [
+        "Acte dangereux",
+        "Condition dangereuse",
+        "Naturel"
+    ],
+    risk: "Niveau de risque",
+    riskOptions: ["Faible", "Moyen", "Élevé"],
+    description: "Description",
+    photos: "Photos (optionnel)",
+    actions: "Actions immédiates prises",
+    investigation: "Enquête requise?",
+    investigationOptions: ["Non", "Oui"],
+    submit: "Soumettre l'observation"
+}
 
     mg: {
-        title: "Taratasy Fandinihana ny Fiarovana",
-        name: "Anarana",
-        badge: "Laharana Badge",
-        site: "Toerana",
-        area: "Faritra",
-        type: "Karazana Fandinihana",
-        typeOptions: ["Fihetsika mampidi-doza", "Toe-javatra mampidi-doza", "Saika loza"],
-        condition: "Fihetsika / Toe-javatra mampidi-doza",
-        conditionOptions: [
-            "Solafaka / Tafintohina / Nianjera",
-            "Tsy misy PPE",
-            "Lalana voasakana",
-            "Fampiasana fitaovana tsy mety",
-            "Hafa"
-        ],
-        category: "Sokajy",
-        categoryOptions: [
-            "Fahadiovana",
-            "PPE",
-            "Fihetsika mampidi-doza",
-            "Toe-javatra mampidi-doza",
-            "Fitaovana / Tools",
-            "Fiara / Fifamoivoizana",
-            "Tontolo iainana",
-            "Fiarovana amin'ny afo",
-            "Hafa"
-        ],
-        risk: "Haavon'ny Loza",
-        riskOptions: ["Ambany", "Antonony", "Avo"],
-        description: "Famaritana",
-        photos: "Sary (tsy voatery)",
-        actions: "Fepetra haingana natao",
-        investigation: "Mila fanadihadiana?",
-        investigationOptions: ["Tsia", "Eny"],
-        submit: "Alefa ny tatitra"
-    },
-
+    title: "Taratasy Fandinihana ny Fiarovana",
+    name: "Anarana",
+    badge: "Laharana Badge",
+    site: "Toerana",
+    area: "Faritra",
+    type: "Karazana Fandinihana",
+    typeOptions: ["Fahasalamana", "Tontolo iainana", "Fiarovana"],
+    condition: "Fihetsika / Toe-javatra mampidi-doza",
+    conditionOptions: [
+        "Fihetsika mampidi-doza",
+        "Toe-javatra mampidi-doza",
+        "Voajanahary"
+    ],
+    risk: "Haavon'ny loza",
+    riskOptions: ["Ambany", "Antonony", "Avo"],
+    description: "Famaritana",
+    photos: "Sary (tsy voatery)",
+    actions: "Fepetra haingana natao",
+    investigation: "Mila fanadihadiana?",
+    investigationOptions: ["Tsia", "Eny"],
+    submit: "Alefa ny tatitra"
+}
     hi: {
-        title: "सुरक्षा अवलोकन फ़ॉर्म",
-        name: "नाम",
-        badge: "बैज नंबर",
-        site: "साइट",
-        area: "क्षेत्र",
-        type: "अवलोकन प्रकार",
-        typeOptions: ["असुरक्षित कार्य", "असुरक्षित स्थिति", "निकट दुर्घटना"],
-        condition: "असुरक्षित कार्य / स्थिति",
-        conditionOptions: [
-            "फिसलना / ठोकर / गिरना",
-            "पीपीई नहीं",
-            "अवरोधित मार्ग",
-            "उपकरण का गलत उपयोग",
-            "अन्य"
-        ],
-        category: "श्रेणी",
-        categoryOptions: [
-            "हाउसकीपिंग",
-            "पीपीई",
-            "असुरक्षित कार्य",
-            "असुरक्षित स्थितियाँ",
-            "उपकरण / औज़ार",
-            "यातायात / वाहन",
-            "पर्यावरण",
-            "अग्नि सुरक्षा",
-            "अन्य"
-        ],
-        risk: "जोखिम स्तर",
-        riskOptions: ["कम", "मध्यम", "उच्च"],
-        description: "विवरण",
-        photos: "फ़ोटो (वैकल्पिक)",
-        actions: "तत्काल किए गए कार्य",
-        investigation: "क्या जांच आवश्यक है?",
-        investigationOptions: ["नहीं", "हाँ"],
-        submit: "अवलोकन जमा करें"
-    },
+    title: "सुरक्षा अवलोकन फ़ॉर्म",
+    name: "नाम",
+    badge: "बैज नंबर",
+    site: "साइट",
+    area: "क्षेत्र",
+    type: "अवलोकन प्रकार",
+    typeOptions: ["स्वास्थ्य", "पर्यावरण", "सुरक्षा"],
+    condition: "असुरक्षित कार्य / स्थिति",
+    conditionOptions: [
+        "असुरक्षित कार्य",
+        "असुरक्षित स्थिति",
+        "प्राकृतिक"
+    ],
+    risk: "जोखिम स्तर",
+    riskOptions: ["कम", "मध्यम", "उच्च"],
+    description: "विवरण",
+    photos: "फ़ोटो (वैकल्पिक)",
+    actions: "तत्काल किए गए कार्य",
+    investigation: "क्या जांच आवश्यक है?",
+    investigationOptions: ["नहीं", "हाँ"],
+    submit: "अवलोकन जमा करें"
+}
     
     tl: {
     title: "Form ng Safety Observation",
@@ -260,35 +203,21 @@ const translations = {
     site: "Site",
     area: "Lugar",
     type: "Uri ng Obserbasyon",
-    typeOptions: ["Hindi Ligtas na Gawain", "Hindi Ligtas na Kondisyon", "Muntikang Aksidente"],
+    typeOptions: ["Kalusugan", "Kapaligiran", "Kaligtasan"],
     condition: "Hindi Ligtas na Gawain / Kondisyon",
     conditionOptions: [
-        "Dulas / Tisod / Pagkahulog",
-        "Walang PPE",
-        "Baradong Daanan",
-        "Maling Paggamit ng Kagamitan",
-        "Iba pa"
-    ],
-    category: "Kategorya",
-    categoryOptions: [
-        "Housekeeping",
-        "PPE",
-        "Hindi Ligtas na Gawain",
-        "Hindi Ligtas na Kondisyon",
-        "Kagamitan / Tools",
-        "Trapiko / Sasakyan",
-        "Kapaligiran",
-        "Fire Safety",
-        "Iba pa"
+        "Hindi ligtas na gawain",
+        "Hindi ligtas na kondisyon",
+        "Natural"
     ],
     risk: "Antas ng Panganib",
     riskOptions: ["Mababa", "Katamtaman", "Mataas"],
     description: "Paglalarawan",
-    photos: "Mga Larawan (opsyonal)",
-    actions: "Agarang Aksyon na Ginawa",
-    investigation: "Kailangan ba ng Imbestigasyon?",
+    photos: "Mga larawan (opsyonal)",
+    actions: "Agarang aksyon na ginawa",
+    investigation: "Kailangan ba ng imbestigasyon?",
     investigationOptions: ["Hindi", "Oo"],
-    submit: "Isumite ang Obserbasyon"
+    submit: "Isumite ang obserbasyon"
 }
 };
 
