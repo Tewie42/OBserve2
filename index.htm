@@ -1,67 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>OBserve</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <style>
-        body {
-            font-family: Arial;
-            text-align: center;
-            padding: 40px 20px;
-            background: #f5f5f5;
-        }
-        h1 {
-            color: #2a6f39;
-            margin-bottom: 10px;
-        }
-        p {
-            color: #444;
-            margin-bottom: 30px;
-        }
-        .btn {
-            display: block;
-            margin: 15px auto;
-            padding: 15px;
-            width: 260px;
-            background: #2a6f37;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 18px;
-        }
-        .btn-secondary {
-            background: #555;
-        }
-        .section-title {
-            margin-top: 40px;
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-        }
-        .container {
-            max-width: 500px;
-            margin: auto;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observe – Safety Made Simple</title>
+    <link rel="stylesheet" href="style-energetic.css">
 </head>
 
 <body>
 
-    <div class="container">
-        <h1>HSE App Portal</h1>
-        <p>Select an option below to continue.</p>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <!-- Replace with your new logo -->
+            <img src="logo.png" alt="Observe Logo">
+        </div>
 
-        <div class="section-title">Admin Tools</div>
-        <a class="btn" href="admin.html">Admin Panel</a>
-        <a class="btn" href="admin-dashboard.html">Admin Dashboard</a>
+        <nav class="nav">
+            <a href="login.html">Login</a>
+            <a href="signup.html" class="btn-white">Sign Up</a>
+        </nav>
+    </header>
 
-        <div class="section-title">User Tools</div>
-        <a class="btn" href="signup.html">User Signup (Test)</a>
-        <a class="btn" href="welcome.html">Welcome Page (Test)</a>
-        <a class="btn" href="observation-form.html">Observation Form</a>
-        <a class="btn btn-secondary" href="dashboard.html">User Dashboard</a>
-    </div>
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Observe. Report. Improve.</h1>
+            <p>A multilingual safety platform built for real‑world teams.</p>
+
+            <div class="hero-buttons">
+                <a href="signup.html" class="btn-white">Get Started Free</a>
+                <a href="#" class="btn-outline">Watch Demo</a>
+            </div>
+        </div>
+
+        <div class="hero-mockups">
+            <img src="mockup-dashboard.png" class="mockup dashboard">
+            <img src="mockup-mobile.png" class="mockup mobile">
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features">
+        <div class="feature-card">
+            <div class="icon">🌐</div>
+            <h3>Multilingual by Design</h3>
+            <p>Submit observations in any language. Instantly translated to English.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="icon">📊</div>
+            <h3>Real‑Time Insights</h3>
+            <p>Track risks, trends, and actions across all your sites.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="icon">⚠️</div>
+            <h3>Instant Escalation</h3>
+            <p>WhatsApp alerts for medium and high‑risk events.</p>
+        </div>
+    </section>
+
+    <!-- SHOWCASE -->
+    <section class="showcase">
+        <div class="showcase-left">
+            <img src="mockup-dashboard.png" class="showcase-img">
+        </div>
+
+        <div class="showcase-right">
+            <h2>Why Teams Choose Observe</h2>
+            <ul>
+                <li>✔ Multilingual reporting</li>
+                <li>✔ Real‑time dashboards</li>
+                <li>✔ Instant WhatsApp alerts</li>
+                <li>✔ Simple and mobile‑friendly</li>
+                <li>✔ Free for small teams</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2026 Observe — Safety Made Simple</p>
+        <div class="footer-links">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Contact</a>
+        </div>
+    </footer>
 
 </body>
 </html>
