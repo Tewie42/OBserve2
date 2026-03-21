@@ -263,7 +263,31 @@ function getObservations() {
 function saveObservations(obs) {
     localStorage.setItem("observations", JSON.stringify(obs));
 }
+const reverseMap = {
+    type: {
+        en: { "Health": "Health", "Environment": "Environment", "Safety": "Safety" },
+        fr: { "Santé": "Health", "Environnement": "Environment", "Sécurité": "Safety" },
+        mg: { "Fahasalamana": "Health", "Tontolo iainana": "Environment", "Fiarovana": "Safety" },
+        hi: { "स्वास्थ्य": "Health", "पर्यावरण": "Environment", "सुरक्षा": "Safety" },
+        tl: { "Kalusugan": "Health", "Kapaligiran": "Environment", "Kaligtasan": "Safety" }
+    },
 
+    condition: {
+        en: { "Unsafe act": "Unsafe act", "Unsafe condition": "Unsafe condition", "Natural": "Natural" },
+        fr: { "Acte dangereux": "Unsafe act", "Condition dangereuse": "Unsafe condition", "Naturel": "Natural" },
+        mg: { "Fihetsika mampidi-doza": "Unsafe act", "Toe-javatra mampidi-doza": "Unsafe condition", "Voajanahary": "Natural" },
+        hi: { "असुरक्षित कार्य": "Unsafe act", "असुरक्षित स्थिति": "Unsafe condition", "प्राकृतिक": "Natural" },
+        tl: { "Hindi ligtas na gawain": "Unsafe act", "Hindi ligtas na kondisyon": "Unsafe condition", "Natural": "Natural" }
+    },
+
+    risk: {
+        en: { "Low": "Low", "Medium": "Medium", "High": "High" },
+        fr: { "Faible": "Low", "Moyen": "Medium", "Élevé": "High" },
+        mg: { "Ambany": "Low", "Antonony": "Medium", "Avo": "High" },
+        hi: { "कम": "Low", "मध्यम": "Medium", "उच्च": "High" },
+        tl: { "Mababa": "Low", "Katamtaman": "Medium", "Mataas": "High" }
+    }
+};
 // Simple "this week" filter: Sunday 00:00 to Saturday 23:59
 function isThisWeek(dateStr) {
     const d = new Date(dateStr);
@@ -416,24 +440,25 @@ function renderCards() {
         card.className = "obs-block";
 
         card.innerHTML = `
-            <h3>Observation ID: ${o.id || "N/A"}</h3>
+    <h3>Observation ID: ${o.id || "N/A"}</h3>
 
-            <p><strong>Date:</strong> ${o.date || "N/A"}</p>
-            <p><strong>Name:</strong> ${o.userName || o.user || o.name || "N/A"}</p>
-            <p><strong>Badge:</strong> ${o.badge || "N/A"}</p>
-            <p><strong>Site:</strong> ${o.site || "N/A"}</p>
-            <p><strong>Area:</strong> ${o.area || "N/A"}</p>
-            <p><strong>Type:</strong> ${o.type || "N/A"}</p>
-            <p><strong>Condition:</strong> ${o.condition_translated || o.conditionType || o.condition || "N/A"}</p>
-            <p><strong>Risk:</strong> ${o.risk || "N/A"}</p>
+    <p><strong>Date:</strong> ${o.date || "N/A"}</p>
+    <p><strong>Name:</strong> ${o.userName || o.user || o.name || "N/A"}</p>
+    <p><strong>Badge:</strong> ${o.badge || "N/A"}</p>
+    <p><strong>Site:</strong> ${o.site || "N/A"}</p>
+    <p><strong>Area:</strong> ${o.area || "N/A"}</p>
 
-            <div class="desc-box">
-                <p><strong>Original ${o.language ? `(${o.language})` : ""}:</strong></p>
-                <p>${o.description_original || "N/A"}</p>
+    <p><strong>Type:</strong> ${reverseMap.type[o.language][o.type] || "N/A"}</p>
+    <p><strong>Condition:</strong> ${reverseMap.condition[o.language][o.conditionType] || "N/A"}</p>
+    <p><strong>Risk:</strong> ${reverseMap.risk[o.language][o.risk] || "N/A"}</p>
 
-                <p><strong>English Translation:</strong></p>
-                <p>${o.description_translated || "N/A"}</p>
-            </div>
+    <div class="desc-box">
+        <p><strong>Original ${o.language ? `(${o.language})` : ""}:</strong></p>
+        <p>${o.description_original || "N/A"}</p>
+
+        <p><strong>English Translation:</strong></p>
+        <p>${o.description_translated || "N/A"}</p>
+    </div>
 
             <p><strong>Actions Taken:</strong> ${o.actions || "N/A"}</p>
             <p><strong>Investigation Required:</strong> ${o.investigation || "N/A"}</p>
