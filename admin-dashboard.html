@@ -448,9 +448,17 @@ function renderCards() {
     <p><strong>Site:</strong> ${o.site || "N/A"}</p>
     <p><strong>Area:</strong> ${o.area || "N/A"}</p>
 
-    <p><strong>Type:</strong> ${reverseMap.type[o.language][o.type] || "N/A"}</p>
-    <p><strong>Condition:</strong> ${reverseMap.condition[o.language][o.conditionType] || "N/A"}</p>
-    <p><strong>Risk:</strong> ${reverseMap.risk[o.language][o.risk] || "N/A"}</p>
+    <p><strong>Type:</strong> ${
+    reverseMap.type[o.language]?.[o.type] || o.type || "N/A"
+}</p>
+
+<p><strong>Condition:</strong> ${
+    reverseMap.condition[o.language]?.[o.conditionType] || o.conditionType || "N/A"
+}</p>
+
+<p><strong>Risk:</strong> ${
+    reverseMap.risk[o.language]?.[o.risk] || o.risk || "N/A"
+}</p>
 
     <div class="desc-box">
         <p><strong>Original ${o.language ? `(${o.language})` : ""}:</strong></p>
