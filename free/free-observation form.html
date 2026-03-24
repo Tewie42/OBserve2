@@ -36,6 +36,28 @@
     <label id="lblDescription">Description</label>
     <textarea id="description" rows="4"></textarea>
 
+<label>Send To Email (optional)</label>
+<input type="email" id="sendEmail" placeholder="example@company.com">
+
+<label>Send To WhatsApp Number (optional)</label>
+<input type="text" id="sendWhatsApp" placeholder="e.g. 261340000000">
+
+<label>Send Via</label>
+<select id="sendMethod">
+    <option value="whatsapp">WhatsApp</option>
+    <option value="email">Email</option>
+</select>
+
+<div id="whatsappField">
+    <label>WhatsApp Number</label>
+    <input type="text" id="sendWhatsApp" placeholder="e.g. 261340000000">
+</div>
+
+<div id="emailField" style="display:none;">
+    <label>Email Address</label>
+    <input type="email" id="sendEmail" placeholder="example@company.com">
+</div>
+    
     <button id="btnSubmit">Submit Observation</button>
 
 </div>
@@ -49,34 +71,53 @@ document.getElementById("btnSubmit").addEventListener("click", () => {
     const type = document.getElementById("type").value;
     const description = document.getElementById("description").value;
 
-    const salesPitch = 
-    "\n\n---\n" +
-    "This observation was submitted using SafeEye — a multilingual, mobile-ready safety observation platform designed to save you time and money.\n\n" +
-    "SafeEye Pricing:\n" +
-    "• Up to 10 users: FREE (full functionality)\n" +
-    "• Up to 100 users: $49.95/month\n" +
-    "• 100+ users or multiple sites: $99.95/month\n\n" +
-    "Register your company here:\n" +
-    "https://yourdomain.com/register";
+    const sendEmail = document.getElementById("sendEmail").value.trim();
+    const sendWhatsApp = document.getElementById("sendWhatsApp").value.trim();
 
-    const message =
-        "New Safety Observation:\n" +
-        "Name: " + name + "\n" +
-        "Site: " + site + "\n" +
-        "Area: " + area + "\n" +
-        "Type: " + type + "\n" +
-        "Description: " + description + 
-        salesPitch;
+    if (!sendEmail && !sendWhatsApp) {
+        alert("Please enter an email or WhatsApp number to send the observation.");
+        return;
+    }
 
-    // OPTION 1: EMAIL
-    const email = "mailto:safeye@yourdomain.com?subject=New Observation&body=" + encodeURIComponent(message);
+    // CARD FORMAT
+    const card =
+        "🟦 *SAFETY OBSERVATION*\n\n" +
+        "*Name:* " + name + "\n" +
+        "*Site:* " + site + "\n" +
+        "*Area:* " + area + "\n" +
+        "*Type:* " + type + "\n" +
+        "*Description:*\n" + description + "\n\n";
 
-    // OPTION 2: WHATSAPP
-    const whatsapp = "https://wa.me/1234567890?text=" + encodeURIComponent(message);
+    // SALES PITCH + PRICING
+    const salesPitch =
+        "—\n" +
+        "This observation was submitted using *SafeEye* — a multilingual, mobile-ready safety observation platform designed to save you time and money.\n\n" +
+        "*SafeEye Pricing:*\n" +
+        "• Up to 10 users: *FREE* (full functionality)\n" +
+        "• Up to 100 users: *$49.95/month*\n" +
+        "• 100+ users or multiple sites: *$99.95/month*\n\n" +
+        "Register your company here:\n" +
+        "https://yourdomain.com/register";
 
-    // Choose which one to use:
-    window.location.href = whatsapp; // or email
+    const message = card + salesPitch;
 
+    // PRIORITY: If WhatsApp is filled → use WhatsApp
+    if (sendWhatsApp) {
+        const waURL = "https://wa.me/" + sendWhatsApp + "?text=" + encodeURIComponent(message);
+        window.location.href = waURL;
+        return;
+    }
+
+    // Otherwise use email
+    if (sendEmail) {
+        const mailURL =
+            "mailto:" + sendEmail +
+            "?subject=" + encodeURIComponent("New Safety Observation") +
+            "&body=" + encodeURIComponent(message);
+
+        window.location.href = mailURL;
+        return;
+    }
 });
 </script>
 
