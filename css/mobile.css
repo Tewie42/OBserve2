@@ -1,0 +1,90 @@
+/* ============================
+   SAFE EYE — MOBILE STYLES ONLY
+   Applies to Observation + Signup forms
+   ============================ */
+
+@media (max-width: 480px) {
+
+  /* General container spacing */
+  .form-container,
+  .signup-container,
+  .observation-container {
+    padding: 16px;
+    gap: 14px;
+    width: 100%;
+  }
+
+  /* Inputs, selects, textareas, buttons */
+  input, select, textarea, button {
+    width: 100%;
+    max-width: 100%;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+
+  /* BONUS FIX — Prevent overlapping buttons */
+  button {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  /* Top bar (logo + language selector) */
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .lang-select {
+    width: 100%;
+  }
+
+  /* Section titles */
+  h2, h3 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  /* Labels */
+  label {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* Fix for side-by-side fields (e.g., name + surname) */
+  .row,
+  .two-column,
+  .side-by-side {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Textareas */
+  textarea {
+    min-height: 120px;
+  }
+
+  /* Radio/checkbox groups */
+  .option-group,
+  .radio-group,
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* Submit button spacing */
+  #btnSubmit,
+  .submit-btn {
+    margin-top: 16px;
+  }
+}
+
+  label {
+    font-size: 14px;
+  }
+}
