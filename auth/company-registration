@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Company Registration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/style-energetic.css">
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+    <a class="back-btn" href="/OBserve2/">← Back</a>
+    <span>Company Registration</span>
+</div>
+
+<!-- REGISTRATION FORM -->
+<div class="auth-container">
+
+    <h2>Register Your Company</h2>
+
+    <label for="companyName">Company Name</label>
+    <input type="text" id="companyName" placeholder="Enter company name">
+
+    <label for="adminName">Admin Full Name</label>
+    <input type="text" id="adminName" placeholder="Enter admin name">
+
+    <label for="adminEmail">Admin Email</label>
+    <input type="email" id="adminEmail" placeholder="Enter admin email">
+
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Create a password">
+
+    <label for="country">Country</label>
+    <input type="text" id="country" placeholder="Enter country">
+
+    <button class="btn-primary" id="btnRegisterCompany">Register Company</button>
+
+</div>
+
+<script>
+document.getElementById("btnRegisterCompany").addEventListener("click", () => {
+    const companies = JSON.parse(localStorage.getItem("companies") || "[]");
+
+    const newCompany = {
+        id: "comp-" + Math.random().toString(36).substr(2, 9),
+        companyName: document.getElementById("companyName").value,
+        adminName: document.getElementById("adminName").value,
+        adminEmail: document.getElementById("adminEmail").value,
+        password: document.getElementById("password").value,
+        country: document.getElementById("country").value,
+        users: [] // internal users added later
+    };
+
+    companies.push(newCompany);
+    localStorage.setItem("companies", JSON.stringify(companies));
+
+    alert("Company registered successfully!");
+
+    // Redirect to homepage or admin dashboard
+    window.location.href = "/OBserve2/";
+});
+</script>
+
+</body>
+</html>
