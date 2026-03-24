@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Free Observation Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/style-energetic.css">
+</head>
+
+<body>
+
+<div class="top-bar">
+    <a class="back-btn" href="/OBserve2/">← Back</a>
+    <span>Free Observation</span>
+</div>
+
+<h2 id="title">Safety Observation Form</h2>
+
+<div class="form-container">
+
+    <label id="lblName">Name</label>
+    <input type="text" id="name">
+
+    <label id="lblSite">Site</label>
+    <input type="text" id="site">
+
+    <label id="lblArea">Area</label>
+    <input type="text" id="area">
+
+    <label id="lblType">Observation Type</label>
+    <select id="type">
+        <option>Health</option>
+        <option>Environment</option>
+        <option>Safety</option>
+    </select>
+
+    <label id="lblDescription">Description</label>
+    <textarea id="description" rows="4"></textarea>
+
+    <button id="btnSubmit">Submit Observation</button>
+
+</div>
+
+<script>
+document.getElementById("btnSubmit").addEventListener("click", () => {
+
+    const name = document.getElementById("name").value;
+    const site = document.getElementById("site").value;
+    const area = document.getElementById("area").value;
+    const type = document.getElementById("type").value;
+    const description = document.getElementById("description").value;
+
+    const salesPitch = 
+    "\n\n---\n" +
+    "This observation was submitted using SafeEye — a multilingual, mobile-ready safety observation platform designed to save you time and money.\n\n" +
+    "SafeEye Pricing:\n" +
+    "• Up to 10 users: FREE (full functionality)\n" +
+    "• Up to 100 users: $49.95/month\n" +
+    "• 100+ users or multiple sites: $99.95/month\n\n" +
+    "Register your company here:\n" +
+    "https://yourdomain.com/register";
+
+    const message =
+        "New Safety Observation:\n" +
+        "Name: " + name + "\n" +
+        "Site: " + site + "\n" +
+        "Area: " + area + "\n" +
+        "Type: " + type + "\n" +
+        "Description: " + description + 
+        salesPitch;
+
+    // OPTION 1: EMAIL
+    const email = "mailto:safeye@yourdomain.com?subject=New Observation&body=" + encodeURIComponent(message);
+
+    // OPTION 2: WHATSAPP
+    const whatsapp = "https://wa.me/1234567890?text=" + encodeURIComponent(message);
+
+    // Choose which one to use:
+    window.location.href = whatsapp; // or email
+
+});
+</script>
+
+</body>
+</html>
