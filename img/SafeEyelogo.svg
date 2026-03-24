@@ -1,0 +1,52 @@
+<svg width="320" height="80" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">SafeEye Logo</title>
+  <desc id="desc">Eye with white safety helmet and SafeEye text</desc>
+
+  <!-- Background (none, transparent) -->
+
+  <!-- Helmet -->
+  <g transform="translate(10,10)">
+    <path
+      d="M30 10
+         C20 10 12 17 10 27
+         L50 27
+         C48 17 40 10 30 10Z"
+      fill="#FFFFFF"
+      stroke="#CCCCCC"
+      stroke-width="2"
+    />
+    <rect x="14" y="27" width="32" height="4" fill="#E6E6E6" />
+
+    <!-- Eye outer shape -->
+    <ellipse cx="30" cy="45" rx="24" ry="14" fill="#FFFFFF" stroke="#154284" stroke-width="2"/>
+
+    <!-- Iris -->
+    <circle cx="30" cy="45" r="8" fill="#4DAAF5"/>
+
+    <!-- Pupil -->
+    <circle cx="30" cy="45" r="4" fill="#000000"/>
+
+    <!-- Checkmark inside iris -->
+    <path
+      d="M27 45 L29 47 L33 42"
+      fill="none"
+      stroke="#FFFFFF"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+
+  <!-- Text: SafeEye -->
+  <!-- "Safe" in dark blue -->
+  <text x="90" y="48" font-family="Segoe UI, system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
+        font-size="28" font-weight="700" fill="#154284">
+    Safe
+  </text>
+
+  <!-- "Eye" in light blue -->
+  <text x="155" y="48" font-family="Segoe UI, system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
+        font-size="28" font-weight="700" fill="#4DAAF5">
+    Eye
+  </text>
+</svg>
