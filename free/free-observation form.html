@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Free Observation Form</title>
+    <title>Safety Observation Form – Free</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../css/style-energetic.css">
 </head>
 
 <body>
 
+<!-- TOP BAR -->
 <div class="top-bar">
     <a class="back-btn" href="/OBserve2/">← Back</a>
-    <span>Free Observation</span>
+    <select id="languageSelect" class="lang-select"></select>
 </div>
 
 <h2 id="title">Safety Observation Form</h2>
@@ -20,6 +21,9 @@
     <label id="lblName">Name</label>
     <input type="text" id="name">
 
+    <label id="lblBadge">Badge Number</label>
+    <input type="text" id="badge">
+
     <label id="lblSite">Site</label>
     <input type="text" id="site">
 
@@ -27,60 +31,373 @@
     <input type="text" id="area">
 
     <label id="lblType">Observation Type</label>
-    <select id="type">
-        <option>Health</option>
-        <option>Environment</option>
-        <option>Safety</option>
-    </select>
+    <select id="type"></select>
+
+    <label id="lblCondition">Unsafe Act / Condition</label>
+    <select id="conditionType"></select>
+
+    <label id="lblRisk">Risk Level</label>
+    <select id="risk"></select>
 
     <label id="lblDescription">Description</label>
     <textarea id="description" rows="4"></textarea>
 
-<label>Send Via</label>
-<select id="sendMethod">
-    <option value="whatsapp">WhatsApp</option>
-    <option value="email">Email</option>
-</select>
+    <label id="lblPhotos">Photos (optional)</label>
+    <input type="file" id="photos" multiple>
 
-<div id="whatsappField">
-    <label>WhatsApp Number</label>
-    <input type="text" id="sendWhatsApp" placeholder="e.g. 261340000000">
-</div>
+    <label id="lblActions">Immediate Actions Taken</label>
+    <textarea id="actions" rows="3"></textarea>
 
-<div id="emailField" style="display:none;">
-    <label>Email Address</label>
-    <input type="email" id="sendEmail" placeholder="example@company.com">
-</div>
-    
+    <label id="lblInvestigation">Investigation Required?</label>
+    <select id="investigation"></select>
+
+    <!-- SEND VIA TOGGLE -->
+    <label>Send Via</label>
+    <select id="sendMethod">
+        <option value="whatsapp">WhatsApp</option>
+        <option value="email">Email</option>
+    </select>
+
+    <div id="whatsappField">
+        <label>WhatsApp Number</label>
+        <input type="text" id="sendWhatsApp" placeholder="e.g. 261340000000">
+    </div>
+
+    <div id="emailField" style="display:none;">
+        <label>Email Address</label>
+        <input type="email" id="sendEmail" placeholder="example@company.com">
+    </div>
+
     <button id="btnSubmit">Submit Observation</button>
+</div>
 
+<!-- POWERED BY + CTA -->
+<div style="text-align:center; margin-top:40px; font-size:14px; opacity:0.7;">
+    Powered by <strong>SafeEye</strong> — Mobile, multilingual safety observations for modern teams.
+</div>
+
+<div style="text-align:center; margin-top:10px;">
+    <a href="/OBserve2/user/company-registration.html"
+       onclick="trackSignupClick()"
+       style="color:#1A73E8; font-weight:600; text-decoration:none;">
+       Want this for your company? Click here to register.
+    </a>
+</div>
+
+<!-- THANK YOU MESSAGE -->
+<div id="thankYou" style="
+    display:none;
+    text-align:center;
+    margin-top:40px;
+    font-size:18px;
+    color:#0F4C81;
+">
+    <p><strong>Thank you!</strong> Your observation has been submitted.</p>
+    <p>Want SafeEye for your company?</p>
+    <a href="/OBserve2/user/company-registration.html"
+       onclick="trackSignupClick()"
+       style="color:#1A73E8; font-weight:600; text-decoration:none;">
+       Click here to register.
+    </a>
 </div>
 
 <script>
-document.getElementById("btnSubmit").addEventListener("click", () => {
+// =======================
+// TRANSLATION DICTIONARY
+// =======================
+const translations = {
+    en: {
+        title: "Safety Observation Form",
+        name: "Name",
+        badge: "Badge Number",
+        site: "Site",
+        area: "Area",
+        type: "Observation Type",
+        typeOptions: ["Health", "Enviroment", "Safety"],
+        condition: "Unsafe Act / Condition",
+        conditionOptions: [
+            "Unsafe act",
+            "Unsafe condition",
+            "Natural",
+        ],
+        risk: "Risk Level",
+        riskOptions: ["Low", "Medium", "High"],
+        description: "Description",
+        photos: "Photos (optional)",
+        actions: "Immediate Actions Taken",
+        investigation: "Investigation Required?",
+        investigationOptions: ["No", "Yes"],
+        submit: "Submit Observation"
+    },
+
+    fr: {
+        title: "Formulaire d'observation de sécurité",
+        name: "Nom",
+        badge: "Numéro de badge",
+        site: "Site",
+        area: "Zone",
+        type: "Type d'observation",
+        typeOptions: ["Santé", "Environnement", "Sécurité"],
+        condition: "Acte / Condition dangereuse",
+        conditionOptions: [
+            "Acte dangereux",
+            "Condition dangereuse",
+            "Naturel"
+        ],
+        risk: "Niveau de risque",
+        riskOptions: ["Faible", "Moyen", "Élevé"],
+        description: "Description",
+        photos: "Photos (optionnel)",
+        actions: "Actions immédiates prises",
+        investigation: "Enquête requise?",
+        investigationOptions: ["Non", "Oui"],
+        submit: "Soumettre l'observation"
+    },
+
+    mg: {
+        title: "Taratasy Fandinihana ny Fiarovana",
+        name: "Anarana",
+        badge: "Laharana Badge",
+        site: "Toerana",
+        area: "Faritra",
+        type: "Karazana Fandinihana",
+        typeOptions: ["Fahasalamana", "Tontolo iainana", "Fiarovana"],
+        condition: "Fihetsika / Toe-javatra mampidi-doza",
+        conditionOptions: [
+            "Fihetsika mampidi-doza",
+            "Toe-javatra mampidi-doza",
+            "Voajanahary"
+        ],
+        risk: "Haavon'ny loza",
+        riskOptions: ["Ambany", "Antonony", "Avo"],
+        description: "Famaritana",
+        photos: "Sary (tsy voatery)",
+        actions: "Fepetra haingana natao",
+        investigation: "Mila fanadihadiana?",
+        investigationOptions: ["Tsia", "Eny"],
+        submit: "Alefa ny tatitra"
+    },
+
+    hi: {
+        title: "सुरक्षा अवलोकन फ़ॉर्म",
+        name: "नाम",
+        badge: "बैज नंबर",
+        site: "साइट",
+        area: "क्षेत्र",
+        type: "अवलोकन प्रकार",
+        typeOptions: ["स्वास्थ्य", "पर्यावरण", "सुरक्षा"],
+        condition: "असुरक्षित कार्य / स्थिति",
+        conditionOptions: [
+            "असुरक्षित कार्य",
+            "असुरक्षित स्थिति",
+            "प्राकृतिक"
+        ],
+        risk: "जोखिम स्तर",
+        riskOptions: ["कम", "मध्यम", "उच्च"],
+        description: "विवरण",
+        photos: "फ़ोटो (वैकल्पिक)",
+        actions: "तत्काल किए गए कार्य",
+        investigation: "क्या जांच आवश्यक है?",
+        investigationOptions: ["नहीं", "हाँ"],
+        submit: "अवलोकन जमा करें"
+    },
+
+    tl: {
+        title: "Form ng Safety Observation",
+        name: "Pangalan",
+        badge: "Badge Number",
+        site: "Site",
+        area: "Lugar",
+        type: "Uri ng Obserbasyon",
+        typeOptions: ["Kalusugan", "Kapaligiran", "Kaligtasan"],
+        condition: "Hindi Ligtas na Gawain / Kondisyon",
+        conditionOptions: [
+            "Hindi ligtas na gawain",
+            "Hindi ligtas na kondisyon",
+            "Natural"
+        ],
+        risk: "Antas ng Panganib",
+        riskOptions: ["Mababa", "Katamtaman", "Mataas"],
+        description: "Paglalarawan",
+        photos: "Mga larawan (opsyonal)",
+        actions: "Agarang aksyon na ginawa",
+        investigation: "Kailangan ba ng imbestigasyon?",
+        investigationOptions: ["Hindi", "Oo"],
+        submit: "Isumite ang obserbasyon"
+    }
+};
+
+// =======================
+// LANGUAGE DROPDOWN
+// =======================
+const languageSelect = document.getElementById("languageSelect");
+const languages = {
+    en: "English",
+    fr: "Français",
+    mg: "Malagasy",
+    hi: "हिन्दी",
+    tl: "Tagalog"
+};
+
+for (const code in languages) {
+    const opt = document.createElement("option");
+    opt.value = code;
+    opt.textContent = languages[code];
+    languageSelect.appendChild(opt);
+}
+
+let currentLang = "en";
+languageSelect.value = currentLang;
+
+function fillSelect(id, options) {
+    const select = document.getElementById(id);
+    select.innerHTML = "";
+    options.forEach(o => {
+        const opt = document.createElement("option");
+        opt.value = o;
+        opt.textContent = o;
+        select.appendChild(opt);
+    });
+}
+
+function applyTranslation() {
+    const t = translations[currentLang];
+
+    document.getElementById("title").textContent = t.title;
+    document.getElementById("lblName").textContent = t.name;
+    document.getElementById("lblBadge").textContent = t.badge;
+    document.getElementById("lblSite").textContent = t.site;
+    document.getElementById("lblArea").textContent = t.area;
+    document.getElementById("lblType").textContent = t.type;
+    document.getElementById("lblCondition").textContent = t.condition;
+    document.getElementById("lblRisk").textContent = t.risk;
+    document.getElementById("lblDescription").textContent = t.description;
+    document.getElementById("lblPhotos").textContent = t.photos;
+    document.getElementById("lblActions").textContent = t.actions;
+    document.getElementById("lblInvestigation").textContent = t.investigation;
+    document.getElementById("btnSubmit").textContent = t.submit;
+
+    fillSelect("type", t.typeOptions);
+    fillSelect("conditionType", t.conditionOptions);
+    fillSelect("risk", t.riskOptions);
+    fillSelect("investigation", t.investigationOptions);
+}
+
+languageSelect.addEventListener("change", () => {
+    currentLang = languageSelect.value;
+    applyTranslation();
+});
+
+applyTranslation();
+
+// =======================
+// AZURE TRANSLATION
+// =======================
+async function translateToEnglish(text, lang) {
+    if (!text || lang === "en") return text;
+
+    const endpoint = "https://api.cognitive.microsofttranslator.com/";
+    const key = "YOUR_AZURE_TRANSLATOR_KEY_HERE";
+    const region = "southafricanorth";
+
+    const response = await fetch(endpoint + "/translate?api-version=3.0&to=en", {
+        method: "POST",
+        headers: {
+            "Ocp-Apim-Subscription-Key": key,
+            "Ocp-Apim-Subscription-Region": region,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify([{ Text: text }])
+    });
+
+    const data = await response.json();
+    return data[0].translations[0].text;
+}
+
+// =======================
+// ANALYTICS (PRIVATE)
+// =======================
+let views = parseInt(localStorage.getItem("freeFormViews") || "0");
+localStorage.setItem("freeFormViews", views + 1);
+
+function trackSubmission() {
+    let subs = parseInt(localStorage.getItem("freeFormSubmissions") || "0");
+    localStorage.setItem("freeFormSubmissions", subs + 1);
+}
+
+function trackSignupClick() {
+    let clicks = parseInt(localStorage.getItem("freeFormSignupClicks") || "0");
+    localStorage.setItem("freeFormSignupClicks", clicks + 1);
+}
+
+// =======================
+// SEND-VIA TOGGLE
+// =======================
+document.getElementById("sendMethod").addEventListener("change", () => {
+    const method = document.getElementById("sendMethod").value;
+
+    document.getElementById("whatsappField").style.display =
+        method === "whatsapp" ? "block" : "none";
+
+    document.getElementById("emailField").style.display =
+        method === "email" ? "block" : "none";
+});
+
+// =======================
+// THANK YOU VIEW
+// =======================
+function showThankYou() {
+    document.querySelector(".form-container").style.display = "none";
+    document.getElementById("thankYou").style.display = "block";
+}
+
+// =======================
+// SUBMIT: SEND CARD + PITCH
+// =======================
+document.getElementById("btnSubmit").addEventListener("click", async () => {
 
     const name = document.getElementById("name").value;
+    const badge = document.getElementById("badge").value;
     const site = document.getElementById("site").value;
     const area = document.getElementById("area").value;
     const type = document.getElementById("type").value;
-    const description = document.getElementById("description").value;
+    const conditionType = document.getElementById("conditionType").value;
+    const risk = document.getElementById("risk").value;
+    const descriptionOriginal = document.getElementById("description").value;
+    const actions = document.getElementById("actions").value;
+    const investigation = document.getElementById("investigation").value;
 
+    const method = document.getElementById("sendMethod").value;
     const sendEmail = document.getElementById("sendEmail").value.trim();
     const sendWhatsApp = document.getElementById("sendWhatsApp").value.trim();
 
-    if (!sendEmail && !sendWhatsApp) {
-        alert("Please enter an email or WhatsApp number to send the observation.");
+    if (method === "whatsapp" && !sendWhatsApp) {
+        alert("Please enter a WhatsApp number.");
         return;
     }
+
+    if (method === "email" && !sendEmail) {
+        alert("Please enter an email address.");
+        return;
+    }
+
+    // Translate description to English
+    const descriptionTranslated = await translateToEnglish(descriptionOriginal, currentLang);
 
     // CARD FORMAT
     const card =
         "🟦 *SAFETY OBSERVATION*\n\n" +
         "*Name:* " + name + "\n" +
+        "*Badge:* " + badge + "\n" +
         "*Site:* " + site + "\n" +
         "*Area:* " + area + "\n" +
         "*Type:* " + type + "\n" +
-        "*Description:*\n" + description + "\n\n";
+        "*Unsafe Act / Condition:* " + conditionType + "\n" +
+        "*Risk Level:* " + risk + "\n\n" +
+        "*Description (original):*\n" + descriptionOriginal + "\n\n" +
+        "*Description (English):*\n" + (descriptionTranslated || descriptionOriginal) + "\n\n" +
+        "*Immediate Actions Taken:*\n" + actions + "\n\n" +
+        "*Investigation Required?:* " + investigation + "\n\n";
 
     // SALES PITCH + PRICING
     const salesPitch =
@@ -95,15 +412,18 @@ document.getElementById("btnSubmit").addEventListener("click", () => {
 
     const message = card + salesPitch;
 
-    // PRIORITY: If WhatsApp is filled → use WhatsApp
-    if (sendWhatsApp) {
+    // Track + Thank you
+    trackSubmission();
+    showThankYou();
+
+    // SEND
+    if (method === "whatsapp") {
         const waURL = "https://wa.me/" + sendWhatsApp + "?text=" + encodeURIComponent(message);
         window.location.href = waURL;
         return;
     }
 
-    // Otherwise use email
-    if (sendEmail) {
+    if (method === "email") {
         const mailURL =
             "mailto:" + sendEmail +
             "?subject=" + encodeURIComponent("New Safety Observation") +
