@@ -11,13 +11,13 @@
   .observation-container {
     padding: 16px;
     gap: 14px;
-    width: 100%;
+    width: 90%;
   }
 
   /* Inputs, selects, textareas, buttons */
   input, select, textarea, button {
-    width: 100%;
-    max-width: 100%;
+    width: 90%;
+    max-width: 90%;
     font-size: 16px;
     box-sizing: border-box;
   }
@@ -25,7 +25,7 @@
   /* BONUS FIX — Prevent overlapping buttons */
   button {
     display: block;
-    width: 100%;
+    width: 90%;
     margin-top: 8px;
   }
 
@@ -38,7 +38,7 @@
   }
 
   .lang-select {
-    width: 100%;
+    width: 90%;
   }
 
   /* Section titles */
@@ -103,13 +103,13 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  width: 100%;
+  width: 90%;
   margin-top: 20px;
 }
 
 .hero-buttons button,
 .hero-buttons a {
-  width: 100%;
+  width: 90%;
   text-align: center;
   padding: 14px;
   font-size: 18px;
@@ -123,7 +123,7 @@
 }
 
 .header-buttons a {
-  width: 100%;
+  width: 90%;
   text-align: center;
 }
   label {
