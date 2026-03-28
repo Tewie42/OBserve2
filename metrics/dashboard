@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SafeEye Dashboard</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="dashboard">
+
+    <header class="dashboard-header">
+      <div>
+        <h1>Why Teams Choose SafeEye</h1>
+        <p>Empowering safety in any language.</p>
+      </div>
+    </header>
+
+    <main class="dashboard-main">
+
+      <!-- Overview cards -->
+      <section class="panel panel-overview">
+        <h2>Overview</h2>
+        <div class="overview-grid">
+          <div class="card metric-card">
+            <span class="metric-label">New Observations</span>
+            <span class="metric-value">18</span>
+          </div>
+          <div class="card metric-card">
+            <span class="metric-label">Open Actions</span>
+            <span class="metric-value">12</span>
+          </div>
+          <div class="card metric-card">
+            <span class="metric-label">Incidents Reported</span>
+            <span class="metric-value">5</span>
+          </div>
+          <div class="card metric-card">
+            <span class="metric-label">Reports This Month</span>
+            <span class="metric-value">27</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recent alerts -->
+      <section class="panel panel-alerts">
+        <h2>Recent Alerts</h2>
+        <ul class="alerts-list">
+          <li class="alert-item high">
+            <div>
+              <p class="alert-title">Broken Handrail on Stair C</p>
+              <p class="alert-meta">High Priority • 10 mins ago</p>
+            </div>
+          </li>
+          <li class="alert-item medium">
+            <div>
+              <p class="alert-title">No PPE in Warehouse</p>
+              <p class="alert-meta">Medium Priority • 30 mins ago</p>
+            </div>
+          </li>
+          <li class="alert-item low">
+            <div>
+              <p class="alert-title">Spill in Loading Dock</p>
+              <p class="alert-meta">Low Priority • 1 hour ago</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Why teams choose SafeEye -->
+      <section class="panel panel-features">
+        <h2>Why teams choose SafeEye</h2>
+        <div class="features-grid">
+          <div class="card feature-card">
+            <h3>Multilingual Support</h3>
+            <p>Report and review in any language.</p>
+            <p class="feature-meta">English • Español • हिंदी • العربية</p>
+          </div>
+          <div class="card feature-card">
+            <h3>Real-Time Alerts</h3>
+            <p>Instant notifications for fast response.</p>
+          </div>
+          <div class="card feature-card">
+            <h3>Smart Analytics</h3>
+            <p>Actionable insights and safety trends.</p>
+          </div>
+          <div class="card feature-card">
+            <h3>Easy Action Tracking</h3>
+            <p>Assign, track, and resolve tasks.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats row -->
+      <section class="panel panel-stats">
+        <div class="stats-grid">
+          <div class="card stat-card">
+            <span class="stat-label">Translation Accuracy</span>
+            <span class="stat-value">98%</span>
+          </div>
+          <div class="card stat-card">
+            <span class="stat-label">Avg Response Time</span>
+            <span class="stat-value">3 min</span>
+          </div>
+          <div class="card stat-card">
+            <span class="stat-label">Safety Compliance</span>
+            <span class="stat-value">97%</span>
+          </div>
+          <div class="card stat-card">
+            <span class="stat-label">User Satisfaction</span>
+            <span class="stat-value">4.8 ★</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+</body>
+</html>
